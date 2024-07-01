@@ -11,7 +11,7 @@ This project involves developing an Employee Attendance Tracker where each emplo
 
 ## Tech Stack
 
-- **Frontend**: React, Redux (for state management)
+- **Frontend**: React
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: Firebase
