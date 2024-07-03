@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function AttendanceList() {
-  return (
-    <div>AttendanceList</div>
-  )
-}
+const AttendanceList = ({ attendances }) => (
+  <ul>
+    {attendances.map((attendance, index) => (
+      <li key={index}>{attendance.date} - {attendance.status}</li>
+    ))}
+  </ul>
+);
 
-export default AttendanceList
+export default AttendanceList;

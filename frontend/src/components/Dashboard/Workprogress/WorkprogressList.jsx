@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-function WorkprogressList() {
-  return (
-    <div>WorkprogressList</div>
-  )
-}
+const WorkProgressList = ({ progressList }) => (
+  <ul>
+    {progressList.map((progress, index) => (
+      <li key={index}>{progress.date} - {progress.description}</li>
+    ))}
+  </ul>
+);
 
-export default WorkprogressList
+export default WorkProgressList;
+  

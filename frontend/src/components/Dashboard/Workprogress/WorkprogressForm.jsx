@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react';
 
-function WorkprogressForm() {
+const WorkProgressForm = () => {
+  const [progress, setProgress] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Submit form logic here
+  };
+
   return (
-    <div>WorkprogressForm</div>
-  )
-}
+    <form onSubmit={handleSubmit}>
+      <label>
+        Work Progress:
+        <textarea value={progress} onChange={(e) => setProgress(e.target.value)} />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
 
-export default WorkprogressForm
+export default WorkProgressForm;
