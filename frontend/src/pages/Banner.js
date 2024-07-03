@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import admin from '../assets/admin.png' 
+import user from '../assets/user.png' 
+
 const Banner = () => {
   return (
     <div className=' mx-10  h-screen flex justify-center items-center flex-col gap-16'>
@@ -15,8 +18,20 @@ const Banner = () => {
        </div>
        <div className='flex justify-center mt-5'>
         <div className='flex justify-center gap-10 w-full'>
-        <Link to={'/home'}><button className=' px-3 rounded-md py-2 bg-blue-400 border-none hover:bg-blue-500 text-xl'>Admin</button></Link>
-        <Link><button className=' px-3 rounded-md py-2 bg-pink-100 border-none hover:bg-pink-200 text-xl'>Employee</button>  </Link>       
+
+        <Link to={'/home'}>
+        <div className='border-2 rounded-md p-5 flex flex-col justify-center items-center gap-8 w-48 shadow-xl hover:shadow-inner'>
+          <img src={admin} alt="admin" className='w-14' />
+          <button className=' px-3 rounded-md py-2 w-full bg-blue-400 border-none hover:bg-blue-500 text-lg'>Admin Login</button>
+        </div>
+        </Link>
+
+        <Link>
+        <div className='border-2 p-5 flex flex-col justify-center items-center gap-8 w-48 shadow-xl hover:shadow-inner'>
+          <img src={user} alt="admin" className='w-14' />
+          <button className=' px-3 rounded-md py-2 bg-pink-100 border-none hover:bg-pink-200 text-lg'>User Login</button> 
+        </div>
+         </Link>       
         </div>
        </div>
        
