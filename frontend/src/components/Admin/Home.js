@@ -10,7 +10,7 @@ import Dashboard from './Dashboard';
 const sections = [
   {
     key: 'Department',
-    icon: <FaRegBuilding size={24} />,
+    icon: <FaRegBuilding size={30} />,
     label: 'Department',
     subItems: ['Add Department', 'Manage Department']
   },
