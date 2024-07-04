@@ -15,7 +15,7 @@ const Managedepartment = ({departmentList}) => {
                             <h2 className='text-lg font-semibold capitalize'>{department}</h2>
                             </div>
                             <div className='flex gap-5'>
-                                <button className='text-blue-500 text-2xl'><FaRegEdit /></button>
+                                <button className='text-blue-600 text-2xl'><FaRegEdit /></button>
                                 <button className='text-red-500 text-2xl'><MdDeleteForever /></button>
                             </div>    
                         </div>    
