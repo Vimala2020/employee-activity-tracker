@@ -1,24 +1,24 @@
 import React from 'react';
-import { FcDepartment } from "react-icons/fc";
-import { FaUsers } from "react-icons/fa6";
-import { MdContacts } from "react-icons/md";
+import { FcDepartment } from 'react-icons/fc';
+import { FaUsers } from 'react-icons/fa';
+import { MdContacts } from 'react-icons/md';
 
 const Dashboard = () => {
   const datas = [
     {
       icon: <FcDepartment size={50} />,
       label: 'Department',
-      total: 3
+      total: 3,
     },
     {
       icon: <MdContacts size={36} />,
       label: 'Registered Employees',
-      total: 3
+      total: 3,
     },
     {
       icon: <FaUsers size={32} />,
       label: 'Users',
-      total: 3
+      total: 3,
     },
   ];
 
