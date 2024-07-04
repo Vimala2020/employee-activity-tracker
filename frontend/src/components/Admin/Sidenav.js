@@ -13,12 +13,14 @@ const sections = [
     icon: <FaRegBuilding size={30} />,
     label: 'Department',
     subItems: ['Add Department', 'Manage Department'],
+    routes: ['/admin/add-department', '/admin/manage-department'],
   },
   {
     key: 'Employee',
     icon: <FaUsers size={24} />,
     label: 'Employee',
     subItems: ['Add Employee', 'Manage Employees'],
+    routes: ['/admin/add-employee', '/admin/manage-employees'],
   },
 ];
 
@@ -27,6 +29,11 @@ const Sidenav = ({toggleSidebar}) => {
 
   const toggleSection = (section) => {
     setOpen(open === section ? null : section);
+  };
+  const handleSubItemClick = (route) => {
+    // Perform any actions here if needed before navigating
+    console.log('Navigating to:', route);
+    // You can use programmatic navigation or Link component
   };
 
   return (
@@ -57,9 +64,11 @@ const Sidenav = ({toggleSidebar}) => {
               </div>
               <div className={`ml-10 mt-3 overflow-hidden transition-all duration-300 ease-in-out ${open === item.key ? 'max-h-40' : 'max-h-0'}`}>
                 {item.subItems.map((subItem, index) => (
-                  <div key={index} className="text-gray-300 text-sm cursor-pointer mt-3">
+                  <Link key={index} to={item.routes[index]} onClick={() => handleSubItemClick(item.routes[index])}>
+                  <div className="text-gray-300 text-sm cursor-pointer mt-3">
                     {subItem}
                   </div>
+                </Link>
                 ))}
               </div>
             </div>

@@ -4,13 +4,20 @@ import Sidenav from './Sidenav';
 import Navbar from './Navbar';
 import Home from './Home';
 import Dashboard from './Dashboard';
+import Adddepartment from './Adddepartment';
+import Managedepartment from './Managedepartment';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [departmentList,setDepartmentList] = useState([])
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  const adddepartment = (newDepartment)=>{
+    setDepartmentList([...departmentList,newDepartment])
+  }
 
   return (
     <div className="flex">
@@ -25,6 +32,8 @@ const AdminLayout = () => {
           <Routes>
             <Route path="home" element={<Home />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="add-department" element={<Adddepartment adddepartment={adddepartment} />} />
+            <Route path="manage-department" element={<Managedepartment departmentList={departmentList} />} />
           </Routes>
         </div>
       </div>
