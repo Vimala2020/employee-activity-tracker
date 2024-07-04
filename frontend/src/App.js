@@ -1,18 +1,15 @@
-import React from 'react'
-import {Routes,Route} from 'react-router-dom'
-import Banner from './pages/Banner'
-import Home from './components/Admin/Home'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Banner from './pages/Banner';
+import AdminLayout from './components/Admin/AdminLayout';
 
 const App = () => {
   return (
-    <div>
-      <Routes>
-        <Route path='/' element={<Banner />}></Route>
-        <Route path='/home' element={<Home />}></Route>
-      
-      </Routes>
-    </div>
-  )
-}
+    <Routes>
+      <Route path="/" element={<Banner />} />
+      <Route path="/admin/*" element={<AdminLayout />} />
+    </Routes>
+  );
+};
 
-export default App
+export default App;
