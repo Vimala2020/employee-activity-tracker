@@ -20,7 +20,7 @@ const sections = [
     icon: <FaUsers size={24} />,
     label: 'Employee',
     subItems: ['Add Employee', 'Manage Employees'],
-    routes: ['/admin/add-employee', '/admin/manage-employees'],
+    routes: ['/admin/add-employee', '/admin/manage-employee'],
   },
 ];
 

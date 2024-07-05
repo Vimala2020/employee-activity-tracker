@@ -9,7 +9,7 @@ const Navbar = ({ toggleSidebar }) => {
         <button onClick={toggleSidebar} className="md:visible">
           <RxHamburgerMenu size={24} />
         </button>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center mr-0 md:mr-7">
           <h2 className="font-bold text-base">Admin</h2>
           <img src={admin} alt="admin" className="w-7 h-7 rounded-full object-cover" />
         </div>
