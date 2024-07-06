@@ -3,22 +3,22 @@ import { FcDepartment } from 'react-icons/fc';
 import { FaUsers } from 'react-icons/fa';
 import { MdContacts } from 'react-icons/md';
 
-const Dashboard = () => {
+const Dashboard = ({departmentList,employees}) => {
   const datas = [
     {
       icon: <FcDepartment size={50} />,
       label: 'Department',
-      total: 3,
+      total: departmentList.length,
     },
     {
       icon: <MdContacts size={36} />,
       label: 'Registered Employees',
-      total: 3,
+      total: employees.length,
     },
     {
       icon: <FaUsers size={32} />,
       label: 'Users',
-      total: 3,
+      total: employees.length,
     },
   ];
 

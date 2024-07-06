@@ -6,11 +6,12 @@ import { FaRegBuilding, FaUsers } from 'react-icons/fa';
 import { MdKeyboardArrowRight, MdKeyboardArrowDown } from 'react-icons/md';
 import { IoIosPrint } from 'react-icons/io';
 import { MdOutlineClose } from "react-icons/md";
+import { PiNotepadThin } from "react-icons/pi";
 
 const sections = [
   {
     key: 'Department',
-    icon: <FaRegBuilding size={30} />,
+    icon: <FaRegBuilding size={24} />,
     label: 'Department',
     subItems: ['Add Department', 'Manage Department'],
     routes: ['/admin/add-department', '/admin/manage-department'],
@@ -30,12 +31,9 @@ const Sidenav = ({toggleSidebar}) => {
   const toggleSection = (section) => {
     setOpen(open === section ? null : section);
   };
-  const handleSubItemClick = (route) => {
-    // Perform any actions here if needed before navigating
-    console.log('Navigating to:', route);
-    // You can use programmatic navigation or Link component
+  const handleSubItemClick = () => {  
+    toggleSidebar();
   };
-
   return (
     <div className="w-full h-screen bg-gray-800">
       <div className='relative'>
@@ -47,8 +45,8 @@ const Sidenav = ({toggleSidebar}) => {
           <h2 className="text-gray-400 text-base font-semibold">Admin</h2>
           
           <div className="flex gap-3 items-center text-white mt-5">
-            <TfiDashboard size={24} />
-            <Link to="/admin/dashboard">
+            <TfiDashboard size={24}/>
+            <Link to="/admin/dashboard" onClick={()=>toggleSidebar()}>
               <h3 className="text-base font-semibold cursor-pointer">Dashboard</h3>
             </Link>
           </div>
@@ -77,8 +75,16 @@ const Sidenav = ({toggleSidebar}) => {
         <div className="mt-5">
           <h2 className="text-gray-400 text-base font-semibold">Report</h2>
           <div className="flex gap-3 items-center text-white mt-5">
+          <PiNotepadThin size={24} />
+          <Link to="/admin/attendance" onClick={()=>toggleSidebar()}>
+           <h3 className="text-base font-semibold cursor-pointer">Attendance Details</h3>
+           </Link>
+          </div>
+          <div className="flex gap-3 items-center text-white mt-5">
             <IoIosPrint size={24} />
+            <Link to="/admin/report" onClick={()=>toggleSidebar()}>
             <h3 className="text-base font-semibold cursor-pointer">Print Report</h3>
+            </Link>
           </div>
         </div>
       </div>

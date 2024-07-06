@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 
 const Adddepartment = ({ adddepartment }) => {
   const [departmentName, setDepartmentName] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    adddepartment(departmentName);
-    setDepartmentName('');
+    try {
+      adddepartment(departmentName);
+      setMessage({ text: 'Department successfully added!', type: 'success' });
+      setDepartmentName('');
+    } catch (error) {
+      setMessage({ text: 'Error adding department. Please try again.', type: 'error' });
+    }
+    setTimeout(()=>{
+      setMessage({text:'',type:''})
+    },3000)
   };
 
   return (
@@ -21,9 +30,15 @@ const Adddepartment = ({ adddepartment }) => {
             placeholder='Add Department Name'
             className='border-2 outline-none p-1 rounded-md'
             value={departmentName}
+            required
             onChange={(e) => setDepartmentName(e.target.value)}
           />
-          <button type='submit' className='bg-blue-500 p-2 rounded-md'>Add</button>
+          <button type='submit' className='bg-blue-500 text-white p-2 rounded-md'>Add</button>
+          {message.text && (
+            <p className={`mt-2 ${message.type === 'success' ? 'text-green-600  font-bold ' : 'text-red-500 font-bold'}`}>
+              {message.text}
+            </p>
+          )}
         </form>
       </div>
     </div>

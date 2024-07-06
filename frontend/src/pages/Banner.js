@@ -5,8 +5,8 @@ import user from '../assets/user.png';
 
 const Banner = () => {
   return (
-    <div className="mx-10 h-screen flex justify-center items-center flex-col gap-16">
-      <div className="flex justify-between items-center">
+    <div className="h-screen flex justify-center items-center flex-col gap-16 bg-[#fafafa]">
+      <div className="flex justify-between items-center mx-10">
         <div className="w-full">
           <h1 className="text-9xl text-blue-500 text-center font-semibold">Employee</h1>
           <h2 className="text-8xl mt-10 text-center">Attendance Tracker</h2>
@@ -17,7 +17,7 @@ const Banner = () => {
       </div>
       <div className="flex justify-center mt-5">
         <div className="flex justify-center gap-10 w-full">
-          <Link to="/admin/home">
+          <Link to="/login">
             <div className="border-2 rounded-md p-5 flex flex-col justify-center items-center gap-8 w-48 shadow-xl hover:shadow-inner">
               <img src={admin} alt="admin" className="w-14" />
               <button className="px-3 rounded-md py-2 w-full bg-blue-400 border-none hover:bg-blue-500 text-lg">Admin Login</button>

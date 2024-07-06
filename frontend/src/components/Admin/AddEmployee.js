@@ -1,186 +1,202 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const AddEmployee = ({ addEmployee }) => {
-    const initialEmployeeState = {
-      firstName: '',
-      lastName: '',
-      department: '',
-      email: '',
-      mobile: '',
-      joiningDate: '',
-      state: '',
-      city: '',
-      address: '',
-      username: '',
-      password: ''
-    };
-  
-    const [employee, setEmployee] = useState(initialEmployeeState);
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      addEmployee(employee); // Call the addEmployee function passed from props
-      console.log('Submitted Employee:', employee); // This should log the employee data
-      setEmployee(initialEmployeeState); // Reset the form fields after submission
-    };
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setEmployee((prevEmployee) => ({
-        ...prevEmployee,
-        [name]: value
-      }));
-    };
+const AddEmployee = ({ addEmployee, departmentList }) => {
+  const initialEmployeeState = {
+    firstName: "",
+    lastName: "",
+    department: "",
+    email: "",
+    mobile: "",
+    joiningDate: "",
+    state: "",
+    city: "",
+    address: "",
+    id: "",
+    password: "",
+  };
+
+  const [employee, setEmployee] = useState(initialEmployeeState);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addEmployee(employee); 
+    console.log("Submitted Employee:", employee);
+    setEmployee(initialEmployeeState); // Reset the form fields after submission
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      [name]: value,
+    }));
+  };
   return (
     <div>
-      <div className='border-2 w-full md:w-[70%] lg:w-[60%] mx-auto'>
-        <h2 className='text-center text-xl p-2 font-bold'>Employee Registration Form</h2>
-        <div className='mx-5 pt-5 flex flex-col gap-3 pb-5'>
-          {/* Form inputs */}
+      <div className="border-2 w-full md:w-[70%] lg:w-[50%] mx-auto">
+        <h2 className="text-center text-xl p-2 font-bold">
+          Employee Registration Form
+        </h2>
+        <div className="mx-5 pt-5 flex flex-col  pb-5">
+
           <form onSubmit={handleSubmit}>
-            <div className='flex gap-5 '>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>First Name</label>
+            <div className="flex gap-5 ">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-1">First Name</label>
                 <input
-                  type='text'
-                  name='firstName'
+                  type="text"
+                  name="firstName"
                   value={employee.firstName}
                   onChange={handleChange}
-                  placeholder='First Name'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="First Name"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Last Name</label>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-1">Last Name</label>
                 <input
-                  type='text'
-                  name='lastName'
+                  type="text"
+                  name="lastName"
                   value={employee.lastName}
                   onChange={handleChange}
-                  placeholder='Last Name'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Last Name"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
 
-            <div className='flex gap-5'>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Department</label>
+            <div className="flex gap-5">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Department</label>
                 <select
-                  name='department'
+                  name="department"
                   value={employee.department}
                   onChange={handleChange}
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 >
-                  <option value=''>Select Department</option>
-                  <option value='HR'>Human Resources</option>
-                  <option value='IT'>Information Technology</option>
-                  <option value='Finance'>Finance</option>
-                  <option value='Operations'>Operations</option>
+                  <option value="">Select Department</option>
+                  {departmentList.map((dept, index) => (
+                    <option key={index} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Email</label>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Employee Id</label>
                 <input
-                  type='email'
-                  name='email'
-                  value={employee.email}
+                  type="number"
+                  name="id"
+                  value={employee.id}
                   onChange={handleChange}
-                  placeholder='Email'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Employee Id"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
 
-            <div className='flex gap-5 '>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Mobile No</label>
+            <div className="flex gap-5 ">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Mobile No</label>
                 <input
-                  type='tel'
-                  name='mobile'
+                  type="number"
+                  name="mobile"
                   value={employee.mobile}
                   onChange={handleChange}
-                  placeholder='Mobile No'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Mobile No"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Date of Joining</label>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Date of Joining</label>
                 <input
-                  type='date'
-                  name='dateOfJoining'
+                  type="date"
+                  name="dateOfJoining"
                   value={employee.dateOfJoining}
                   onChange={handleChange}
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
 
-            <div className='flex gap-5 '>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>State</label>
+            <div className="flex gap-5 ">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">State</label>
                 <input
-                  type='text'
-                  name='state'
+                  type="text"
+                  name="state"
                   value={employee.state}
                   onChange={handleChange}
-                  placeholder='State'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="State"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>City</label>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">City</label>
                 <input
-                  type='text'
-                  name='city'
+                  type="text"
+                  name="city"
                   value={employee.city}
                   onChange={handleChange}
-                  placeholder='City'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="City"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
 
-            <div className='flex gap-5 '>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Address</label>
+            <div className="flex gap-5 ">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Address</label>
                 <textarea
-                  name='address'
+                  name="address"
                   value={employee.address}
                   onChange={handleChange}
-                  placeholder='Address'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Address"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 ></textarea>
               </div>
             </div>
 
-            <div className='flex gap-5 '>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Username</label>
+            <div className="flex gap-5 ">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">User Email</label>
                 <input
-                  type='text'
-                  name='username'
-                  value={employee.username}
+                  type="text"
+                  name="email"
+                  value={employee.email}
                   onChange={handleChange}
-                  placeholder='Username'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Username"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label className='font-medium'>Password</label>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Password</label>
                 <input
-                  type='password'
-                  name='password'
+                  type="password"
+                  name="password"
                   value={employee.password}
                   onChange={handleChange}
-                  placeholder='Password'
-                  className='w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none'
+                  required
+                  placeholder="Password"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
-
-            {/* Submit button */}
-            <button type='submit' className='bg-blue-500 text-white p-2 font-bold mt-5'>
+            
+            <button
+              type="submit"
+              className="bg-blue-500 text-white p-2 font-bold mt-5"
+            >
               Submit
             </button>
           </form>
