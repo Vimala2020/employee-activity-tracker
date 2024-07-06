@@ -24,7 +24,7 @@ const EmployeeDashboard = () => {
   const recentActivities = [
     'Logged in',
     'Marked attendance',
-    'Submitted progress report',
+    'Submitted progress reports',
   ];
 
   return (
