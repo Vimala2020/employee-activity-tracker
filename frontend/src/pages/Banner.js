@@ -23,7 +23,7 @@ const Banner = () => {
               <button className="px-3 rounded-md py-2 w-full bg-blue-400 border-none hover:bg-blue-500 text-lg">Admin Login</button>
             </div>
           </Link>
-          <Link to="/user">
+          <Link to="/employee/login">
             <div className="border-2 p-5 flex flex-col justify-center items-center gap-8 w-48 shadow-xl hover:shadow-inner">
               <img src={user} alt="user" className="w-14" />
               <button className="px-3 rounded-md py-2 bg-pink-100 border-none hover:bg-pink-200 text-lg">User Login</button>
