@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const WorkProgressList = ({ progressList }) => (
   <ul>
@@ -8,5 +9,13 @@ const WorkProgressList = ({ progressList }) => (
   </ul>
 );
 
+WorkProgressList.propTypes = {
+  progressList: PropTypes.arrayOf(
+    PropTypes.shape({
+      date: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
+
 export default WorkProgressList;
-  
