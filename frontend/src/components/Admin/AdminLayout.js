@@ -8,6 +8,10 @@ import Adddepartment from './Adddepartment';
 import Managedepartment from './Managedepartment';
 import AddEmployee from './AddEmployee';
 import ManageEmployee from './ManageEmployee';
+import AttendanceDetails from './AttendanceDetails';
+import Report from './Report';
+import { toast } from 'react-toastify';
+
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,28 +23,50 @@ const AdminLayout = () => {
   };
 
   const adddepartment = (newDepartment) => {
-    setDepartmentList([...departmentList, newDepartment]);
+    setDepartmentList([...departmentList, newDepartment]);    
   };
 
   const deleteDepartment = (index) => {
-    const newDepartmentList = departmentList.filter((_, i) => i !== index);
-    setDepartmentList(newDepartmentList);
+    try {
+      const newDepartmentList = departmentList.filter((_, i) => i !== index);
+      setDepartmentList(newDepartmentList);
+      toast.success('Successfully Deleted ')      
+    } catch (error) {
+      toast.error(error)
+    }
+   
   };
 
   const editDepartment = (index, newName) => {
-    const newDepartmentList = departmentList.map((department, i) =>
-      i === index ? newName : department
-    );
-    setDepartmentList(newDepartmentList);
+    try {
+      const newDepartmentList = departmentList.map((department, i) => i === index ? newName : department)     
+      setDepartmentList(newDepartmentList);
+      toast.success('successfully Edited')      
+    } catch (error) {
+      toast.error(error)      
+    }
+    
   };
 
   const addEmployee = (newEmployee) => {
-    setEmployees([...employees, newEmployee]);
+    try {
+      setEmployees([...employees, newEmployee]);
+      toast.success('New Employee added')      
+    } catch (error) {
+      toast.error(error)     
+    }
+  
   };
 
+
   const deleteEmployee = (index) => {
-    const newEmployeeList = employees.filter((_, i) => i !== index);
-    setEmployees(newEmployeeList);
+    try {
+      const newEmployeeList = employees.filter((_, i) => i !== index);
+      setEmployees(newEmployeeList);
+      toast.success('Employee deleted successfully')
+    } catch (error) {
+      toast.error(error)      
+    }
   };
 
   return (
@@ -55,31 +81,25 @@ const AdminLayout = () => {
         <div className="mt-16 p-4">
           <Routes>
             <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard  departmentList={departmentList} employees={employees} />} />
+            <Route path="/add-employee" element={<AddEmployee addEmployee={addEmployee} departmentList={departmentList} />} />            
+            <Route path="/manage-employee" element={<ManageEmployee employees={employees} deleteEmployee={deleteEmployee}/>} />            
             <Route path="/add-department" element={<Adddepartment adddepartment={adddepartment} />} />
-            <Route
-              path="/add-employee"
-              element={<AddEmployee addEmployee={addEmployee} />}
-            />
-            <Route
-              path="/manage-employee"
-              element={<ManageEmployee employees={employees} deleteEmployee={deleteEmployee}/>}
-            />
-            <Route
-              path="/manage-department"
-              element={
-                <Managedepartment
-                  departmentList={departmentList}
-                  deleteDepartment={deleteDepartment}
-                  editDepartment={editDepartment}
-                />
-              }
-            />
-          </Routes>
+            <Route path="/attendance" element={<AttendanceDetails />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/manage-department" element={ <Managedepartment   departmentList={departmentList} 
+                         deleteDepartment={deleteDepartment} editDepartment={editDepartment}/>} />
+            </Routes>
+            
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminLayout;
+export default AdminLayout;      
+                           
+              
+                
+              
+        
