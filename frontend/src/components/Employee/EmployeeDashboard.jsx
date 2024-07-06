@@ -1,31 +1,46 @@
+// src/components/Employee/EmployeeDashboard.js
+
 import React from 'react';
-import Sidebar from './Sidebar';
+import { Routes, Route } from 'react-router-dom';
 import Header from './Header';
-import AttendanceForm from './Attendance/AttendanceForm';
-import AttendanceList from './Attendance/AttendanceList';
-import WorkProgressForm from './Workprogress/WorkprogressForm';
-import WorkProgressList from './Workprogress/WorkprogressList';
-import DashboardOverview from './DashboardOverview';
+import Sidebar from './Sidebar';
+import Dashboard from './DashboardOverview'
+import AttendancePage from './pages/AttendancePage';
+import WorkProgressPage from './pages/DailyProgress';
 import Profile from './Profile';
 
+
 const EmployeeDashboard = () => {
-  const recentActivities = ['Checked in at 9:00 AM', 'Completed task ABC', 'Checked out at 5:00 PM'];
-  const attendances = [{ date: '2023-07-01', status: 'present' }, { date: '2023-07-02', status: 'present' }];
-  const progressList = [{ date: '2023-07-01', description: 'Completed module X' }, { date: '2023-07-02', description: 'Started module Y' }];
-  const user = { name: 'John Doe', email: 'john.doe@example.com' };
+  const user = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    role: 'Developer',
+  };
+
+  const handleLogout = () => {
+    console.log('Logout');
+  };
+
+  const recentActivities = [
+    'Logged in',
+    'Marked attendance',
+    'Submitted progress reports',
+  ];
 
   return (
-    <div className="employee-dashboard">
-      <Header />
+    <div className="flex">
       <Sidebar />
-      <main>
-        <DashboardOverview recentActivities={recentActivities} />
-        <AttendanceForm />
-        <AttendanceList attendances={attendances} />
-        <WorkProgressForm />
-        <WorkProgressList progressList={progressList} />
-        <Profile user={user} />
-      </main>
+      <div className="flex-1">
+        <Header user={user} onLogout={handleLogout} />
+        <div className="p-4">
+          <Routes>
+            <Route path="dashboard" element={<Dashboard recentActivities={recentActivities} />} />
+            <Route path="attendance" element={<AttendancePage />} />
+            <Route path="work-progress" element={<WorkProgressPage />} />
+            <Route path="profile" element={<Profile user={user} />} />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 };
