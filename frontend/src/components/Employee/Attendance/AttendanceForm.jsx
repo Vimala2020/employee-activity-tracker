@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const AttendanceForm = () => {
-  const [status, setStatus] = useState('present');
-  const [workDescription, setWorkDescription] = useState('');
+  const [attendance, setAttendance] = useState({ employeeId: '', date: '', status: '' });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAttendance({ ...attendance, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit form logic here
+    try {
+      const response = await axios.post('/api/attendance', attendance);
+      console.log(response.data.message);
+    } catch (error) {
+      console.error('Error marking attendance:', error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Status:
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="present">Present</option>
-          <option value="absent">Absent</option>
-        </select>
-      </label>
-      <label>
-        Work Description:
-        <textarea value={workDescription} onChange={(e) => setWorkDescription(e.target.value)} />
-      </label>
-      <button type="submit">Submit</button>
+      <input type="text" name="employeeId" value={attendance.employeeId} onChange={handleChange} placeholder="Employee ID" />
+      <input type="date" name="date" value={attendance.date} onChange={handleChange} />
+      <select name="status" value={attendance.status} onChange={handleChange}>
+        <option value="">Select Status</option>
+        <option value="Present">Present</option>
+        <option value="Absent">Absent</option>
+      </select>
+      <button type="submit">Mark Attendance</button>
     </form>
   );
 };
