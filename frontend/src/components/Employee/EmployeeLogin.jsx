@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../Auth/Firebase';
+import {signInWithEmailAndPassword} from 'firebase/auth'
 
 const EmployeeLogin = () => {
   const [email, setEmail] = useState('');
@@ -7,17 +9,14 @@ const EmployeeLogin = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Mock credentials
-    
-
-    if (email === 'employee@gmail.com' && password === '12345678') {
-      // Redirect to employee dashboard
-      navigate('/employee/dashboard');
-    } else {
-      setError('Invalid email or password');
-    }
+  const handleLogin = async (e) => {
+    e.preventDefault();   
+    try {
+      await signInWithEmailAndPassword(auth,email,password)
+      navigate('/employee/dashboard')      
+    } catch (error) {    
+      setError('Invalid credentials')      
+    }    
   };
 
   return (

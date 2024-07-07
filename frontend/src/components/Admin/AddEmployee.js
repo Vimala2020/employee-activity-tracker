@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import {auth} from '../Auth/Firebase'
+import {createUserWithEmailAndPassword} from 'firebase/auth'
+
 
 const AddEmployee = ({ addEmployee, departmentList }) => {
   const initialEmployeeState = {
@@ -17,11 +20,19 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
 
   const [employee, setEmployee] = useState(initialEmployeeState);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addEmployee(employee); 
-    console.log("Submitted Employee:", employee);
-    setEmployee(initialEmployeeState); // Reset the form fields after submission
+    try {
+        await createUserWithEmailAndPassword(auth,employee.email,employee.password)
+        addEmployee(employee); 
+        console.log("Submitted Employee:", employee);
+       setEmployee(initialEmployeeState); // Reset the form fields after submission
+      
+    } catch (error) {
+      console.log('Error creating user',error)
+      
+    }
+    
   };
 
   const handleChange = (e) => {
