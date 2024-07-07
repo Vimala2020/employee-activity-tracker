@@ -3,11 +3,11 @@
 import React from 'react';
 
 const Header = ({ user, onLogout }) => (
-  <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
+  <header className="bg-[#63b7af] text-white p-4 flex justify-between items-center w-full">
     <h1 className="text-xl font-bold">Employee Dashboard</h1>
     <div className="flex items-center space-x-4">
       <span>{user.name}</span>
-      <button onClick={onLogout} className="bg-red-500 px-3 py-1 rounded">Logout</button>
+      <button onClick={onLogout} className="bg-white text-red-500 font-bold  px-3 py-1 rounded">Logout</button>
     </div>
   </header>
 );

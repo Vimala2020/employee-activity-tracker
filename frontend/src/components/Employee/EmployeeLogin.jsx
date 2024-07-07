@@ -10,10 +10,9 @@ const EmployeeLogin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     // Mock credentials
-    const mockEmail = 'employee@example.com';
-    const mockPassword = 'password123';
+    
 
-    if (email === mockEmail && password === mockPassword) {
+    if (email === 'employee@gmail.com' && password === '12345678') {
       // Redirect to employee dashboard
       navigate('/employee/dashboard');
     } else {
