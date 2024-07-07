@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+// import axios from 'axios';
 import AttendanceList from '../Attendance/AttendanceList';
 
 const AttendancePage = () => {
-  const [attendances, setAttendances] = useState([]);
+  const [attendances, ] = useState([]);
 
-  useEffect(() => {
-    axios.get('/api/attendance')
-      .then(response => setAttendances(response.data))
-      .catch(error => console.error('Error fetching attendance data:', error));
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/api/attendance')
+  //     .then(response => setAttendances(response.data))
+  //     .catch(error => console.error('Error fetching attendance data:', error));
+  // }, []);
 
   return (
     <div>

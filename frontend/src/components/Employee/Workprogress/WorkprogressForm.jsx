@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 
 const WorkProgressForm = ({ onProgressSubmit }) => {
   const [progress, setProgress] = useState({ employeeId: '', date: '', progress: '' });
@@ -11,8 +11,8 @@ const WorkProgressForm = ({ onProgressSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/progress', progress);
-      console.log(response.data.message);
+      // const response = await axios.post('/api/progress', progress);
+      // console.log(response.data.message);
     } catch (error) {
       console.error('Error submitting progress:', error);
     }

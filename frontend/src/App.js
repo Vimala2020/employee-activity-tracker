@@ -8,12 +8,14 @@ import EmployeeLogin from './components/Employee/EmployeeLogin';
 
 
 const App = () => {
-  return (
+  return (    
     <Routes>
-      <Route path="/" element={<Banner />} />
+      <Route path="/" element={<Banner />} />    
       
       <Route path="/employee/login" element={<EmployeeLogin />} />
       <Route path="/admin/*" element={<AdminLayout />} /> 
+      <Route path="/login" element={<Login />} />
+   
         <Route path="/employee/*" element={<EmployeeLayout />} />
     </Routes>
   );
