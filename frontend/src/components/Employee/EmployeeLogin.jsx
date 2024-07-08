@@ -15,7 +15,7 @@ const EmployeeLogin = () => {
     try {
       await signInWithEmailAndPassword(auth,email,password)
       navigate('/employee/dashboard') 
-      toast.success('Admin successfully login')     
+      toast.success('Employee successfully logged in')     
     } catch (error) {    
       setError('Invalid credentials')  
       toast.error('Invalid Credentials')    
