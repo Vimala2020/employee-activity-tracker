@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Banner from './pages/Banner';
 import AdminLayout from './components/Admin/AdminLayout';
 import EmployeeLayout from './components/Employee/EmployeeDashboard';
 import Login from './components/Auth/Login';
 import EmployeeLogin from './components/Employee/EmployeeLogin';
+
 
 
 const App = () => {

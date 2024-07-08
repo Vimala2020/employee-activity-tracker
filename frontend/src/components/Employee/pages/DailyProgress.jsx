@@ -1,33 +1,23 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
 import WorkProgressForm from '../Workprogress/WorkprogressForm';
 import WorkProgressList from '../Workprogress/WorkprogressList';
 
 const DailyProgress = () => {
-  const [progressList, setProgressList] = useState([]);
+  const [progresses, setProgresses] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchProgress = async () => {
-  //     try {
-  //       const response = await axios.get('/api/progress');
-  //       setProgressList(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching progress:', error);
-  //     }
-  //   };
-
-  //   fetchProgress();
-  // }, []);
-
-  const handleProgressSubmit = (newProgress) => {
-    setProgressList([...progressList, newProgress]);
+  const handleProgressSubmit = (progress) => {
+    setProgresses([...progresses, progress]);
   };
 
   return (
-    <div>
-      <h1>Submit Daily Progress</h1>
-      <WorkProgressForm onProgressSubmit={handleProgressSubmit} />
-      <WorkProgressList progressList={progressList} />
+    <div className="max-w-4xl mx-auto py-10">
+      <h1 className="text-3xl font-bold text-center mb-6">Submit Daily Progress</h1>
+      <div className="mb-10">
+        <WorkProgressForm onProgressSubmit={handleProgressSubmit} />
+      </div>
+      <div>
+        <WorkProgressList progresses={progresses} />
+      </div>
     </div>
   );
 };
