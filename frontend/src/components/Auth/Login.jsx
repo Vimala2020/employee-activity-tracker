@@ -20,6 +20,7 @@ const handleSubmit = (e)=>{
   }
 }  
 
+
   return (
       <div className='h-screen  flex  justify-center items-center bg-black bg-opacity-80 '>
     <div className='border-2 w-[70%] md:w-1/3 lg:w-1/4 h-[50%] flex flex-col gap-5 bg-white rounded-xl'>

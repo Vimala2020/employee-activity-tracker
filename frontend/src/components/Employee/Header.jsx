@@ -1,16 +1,19 @@
-// src/components/Employee/Header.js
-
 import React from 'react';
+import Logout from '../Auth/Logout';
 
-const Header = ({ user, onLogout }) => (
-  <header className="bg-[#63b7af] text-white p-4 flex justify-between items-center w-full">
-    <h1 className="text-xl font-bold">Employee Dashboard</h1>
-    <div className="flex items-center space-x-4">
-      <span>{user.name}</span>
-      <button onClick={onLogout} className="bg-white text-red-500 font-bold  px-3 py-1 rounded">Logout</button>
-    </div>
-  </header>
-);
+
+const Header = ({ user, toggleSidebar }) => {
+  return (
+    <header className="bg-gradient-to-r from-teal-400 to-blue-500 text-white p-6 shadow-lg">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-2xl font-bold tracking-wide">Employee Dashboard</h1>
+        <div className="flex items-center space-x-6">
+          <span className="text-lg font-semibold">{user.name}</span>
+          <Logout />
+        </div>
+      </div>
+    </header>
+  );
+};
 
 export default Header;
-  
