@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { TfiDashboard } from 'react-icons/tfi';
 import { IoIosPrint } from 'react-icons/io';
@@ -8,7 +8,7 @@ import admin from '../../assets/admin.png';
 
 
 const Sidebar = ({ toggleSidebar }) => {
-  const [open, setOpen] = useState(null);
+  
 
   return (
     <div className="w-full h-screen bg-[#35495e]">
