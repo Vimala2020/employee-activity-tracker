@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import WorkProgressForm from '../Workprogress/WorkprogressForm';
 import WorkProgressList from '../Workprogress/WorkprogressList';
 
-const DailyProgress = () => {
+const Workprogress = () => {
   const [progresses, setProgresses] = useState([]);
 
   const handleProgressSubmit = (progress) => {
@@ -22,4 +22,4 @@ const DailyProgress = () => {
   );
 };
 
-export default DailyProgress;
+export default Workprogress;
