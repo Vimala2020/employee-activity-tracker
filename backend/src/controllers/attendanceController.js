@@ -9,7 +9,7 @@ exports.markAttendance = async (req, res) => {
     await attendance.save();
     res.status(200).send('Attendance marked successfully');
   } catch (error) {
-    res.status(500).send('Error marking attendance');
+    res.status(500).send('Error marking attendances');
   }
 };
 
@@ -18,6 +18,6 @@ exports.getAttendance = async (req, res) => {
     const attendance = await Attendance.find().populate('userId', 'name email');
     res.status(200).json(attendance);
   } catch (error) {
-    res.status(500).send('Error fetching attendance data');
+    res.status(500).send('Error fetching attendance datas');
   }
 };

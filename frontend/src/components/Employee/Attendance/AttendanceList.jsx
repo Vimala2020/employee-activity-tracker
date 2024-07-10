@@ -5,13 +5,13 @@ const AttendanceList = ({ attendances }) => {
   return (
     <div>
       {attendances.length === 0 ? (
-        <p>No attendance records available.</p>
+        <p className="text-gray-600">No attendance records available.</p>
       ) : (
-        <ul>
+        <ul className="list-disc pl-5 space-y-2">
           {attendances.map((attendance, index) => {
             const date = new Date(attendance.date).toLocaleDateString();
             return (
-              <li key={index}>
+              <li key={index} className="text-gray-700">
                 {date} - {attendance.status} {attendance.user ? `- ${attendance.user.name}` : ''}
               </li>
             );

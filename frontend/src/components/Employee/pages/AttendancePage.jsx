@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-// import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import AttendanceList from '../Attendance/AttendanceList';
+import AttendanceForm from '../Attendance/AttendanceForm';
 
 const AttendancePage = () => {
-  const [attendances, ] = useState([]);
+  const [attendances, setAttendances] = useState([]);
 
-  // useEffect(() => {
-  //   axios.get('/api/attendance')
-  //     .then(response => setAttendances(response.data))
-  //     .catch(error => console.error('Error fetching attendance data:', error));
-  // }, []);
+  useEffect(() => {
+    axios.get('/api/attendance')
+      .then(response => setAttendances(response.data))
+      .catch(error => console.error('Error fetching attendance data:', error));
+  }, []);
 
   return (
-    <div>
-      <h1>Attendance Records</h1>
-      <AttendanceList attendances={attendances} />
+    <div className="container mx-auto p-4">
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-4">Attendance Records</h1>
+        <AttendanceForm />
+        <AttendanceList attendances={attendances} />
+      </div>
     </div>
   );
 };

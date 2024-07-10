@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../Auth/Firebase';
 import {signInWithEmailAndPassword} from 'firebase/auth'
+import { toast } from 'react-toastify'
 
 const EmployeeLogin = () => {
   const [email, setEmail] = useState('');
@@ -13,9 +14,11 @@ const EmployeeLogin = () => {
     e.preventDefault();   
     try {
       await signInWithEmailAndPassword(auth,email,password)
-      navigate('/employee/dashboard')      
+      navigate('/employee/dashboard') 
+      toast.success('Employee successfully logged in')     
     } catch (error) {    
-      setError('Invalid credentials')      
+      setError('Invalid credentials')  
+      toast.error('Invalid Credentials')    
     }    
   };
 
