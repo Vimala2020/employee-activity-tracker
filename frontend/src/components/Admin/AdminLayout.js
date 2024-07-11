@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidenav from './Sidenav';
 import Navbar from './Navbar';
@@ -11,62 +11,88 @@ import ManageEmployee from './ManageEmployee';
 import AttendanceDetails from './AttendanceDetails';
 import Report from './Report';
 import { toast } from 'react-toastify';
-
+import axios from 'axios';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [departmentList, setDepartmentList] = useState([]);
   const [employees, setEmployees] = useState([]);
 
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/department');
+        setDepartmentList(response.data);
+      } catch (error) {
+        console.error('Error fetching department data:', error);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  
+
+  const addDepartment = async (newDepartment) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/department/add', { name: newDepartment });
+      setDepartmentList([...departmentList, response.data.department]);
+      toast.success(response.data.message);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        toast.error('Department already exists. Please choose a different name.');
+      } else {
+        toast.error(error.response?.data?.message || 'Error adding department');
+      }
+    }
+  };
+
+  const editDepartment = async (id, updatedName) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/department/edit/${id}`, { name: updatedName });
+      setDepartmentList(departmentList.map(dept => (dept._id === id ? response.data.department : dept)));
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error updating department');
+    }
+  };
+
+  const deleteDepartment = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/department/delete/${id}`);
+      setDepartmentList(departmentList.filter(dept => dept._id !== id));
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error deleting department');
+    }
+  };
+
+  const addEmployee = async (newEmployee) => {
+    try {
+      // Add employee to MongoDB
+      const response = await axios.post('http://localhost:5000/api/employee/add', newEmployee);
+      setEmployees([...employees, response.data.employee]);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error adding employee');
+    }
+  };
+
+  const deleteEmployee = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/employee/delete/${id}`);
+      setEmployees(employees.filter((employee) => employee._id !== id));
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error deleting employee');
+    }
+  };
+  
+  
+  
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
-  };
-
-  const adddepartment = (newDepartment) => {
-    setDepartmentList([...departmentList, newDepartment]);    
-  };
-
-  const deleteDepartment = (index) => {
-    try {
-      const newDepartmentList = departmentList.filter((_, i) => i !== index);
-      setDepartmentList(newDepartmentList);
-      toast.success('Successfully Deleted ')      
-    } catch (error) {
-      toast.error(error)
-    }
-   
-  };
-
-  const editDepartment = (index, newName) => {
-    try {
-      const newDepartmentList = departmentList.map((department, i) => i === index ? newName : department)     
-      setDepartmentList(newDepartmentList);
-      toast.success('successfully Edited')      
-    } catch (error) {
-      toast.error(error)      
-    }
-    
-  };
-
-  const addEmployee = (newEmployee) => {
-    try {
-      setEmployees([...employees, newEmployee]);
-      toast.success('New Employee added')      
-    } catch (error) {
-      toast.error(error)     
-    }
-  
-  };
-
-
-  const deleteEmployee = (index) => {
-    try {
-      const newEmployeeList = employees.filter((_, i) => i !== index);
-      setEmployees(newEmployeeList);
-      toast.success('Employee deleted successfully')
-    } catch (error) {
-      toast.error(error)      
-    }
   };
 
   return (
@@ -81,25 +107,18 @@ const AdminLayout = () => {
         <div className="mt-16 p-4">
           <Routes>
             <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard  departmentList={departmentList} employees={employees} />} />
-            <Route path="/add-employee" element={<AddEmployee addEmployee={addEmployee} departmentList={departmentList} />} />            
-            <Route path="/manage-employee" element={<ManageEmployee employees={employees} deleteEmployee={deleteEmployee}/>} />            
-            <Route path="/add-department" element={<Adddepartment adddepartment={adddepartment} />} />
+            <Route path="/dashboard" element={<Dashboard departmentList={departmentList} employees={employees} />} />
+            <Route path="/add-employee" element={<AddEmployee addEmployee={addEmployee} departmentList={departmentList} />} />
+            <Route path="/manage-employee" element={<ManageEmployee employees={employees} deleteEmployee={deleteEmployee} />} />
+            <Route path="/add-department" element={<Adddepartment addDepartment={addDepartment} />} />
             <Route path="/attendance" element={<AttendanceDetails />} />
             <Route path="/report" element={<Report />} />
-            <Route path="/manage-department" element={ <Managedepartment   departmentList={departmentList} 
-                         deleteDepartment={deleteDepartment} editDepartment={editDepartment}/>} />
-            </Routes>
-            
+            <Route path="/manage-department" element={<Managedepartment departmentList={departmentList} editDepartment={editDepartment} deleteDepartment={deleteDepartment} />} />
+          </Routes>
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminLayout;      
-                           
-              
-                
-              
-        
+export default AdminLayout;
