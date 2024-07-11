@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import {auth} from '../Auth/Firebase'
-import {createUserWithEmailAndPassword} from 'firebase/auth'
-
+import { auth } from '../Auth/Firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const AddEmployee = ({ addEmployee, departmentList }) => {
   const initialEmployeeState = {
@@ -23,16 +22,17 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        await createUserWithEmailAndPassword(auth,employee.email,employee.password)
-        addEmployee(employee); 
-        console.log("Submitted Employee:", employee);
-       setEmployee(initialEmployeeState); // Reset the form fields after submission
+      const userCredential = await createUserWithEmailAndPassword(auth, employee.email, employee.password);
+      const userId = userCredential.user.uid;
       
+      const employeeWithId = { ...employee, firebaseId: userId };
+      addEmployee(employeeWithId); 
+      
+      console.log("Submitted Employee:", employeeWithId);
+      setEmployee(initialEmployeeState); // Reset the form fields after submission
     } catch (error) {
-      console.log('Error creating user',error)
-      
+      console.log('Error creating user', error);
     }
-    
   };
 
   const handleChange = (e) => {
@@ -42,16 +42,14 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
       [name]: value,
     }));
   };
+
   return (
     <div>
       <div className="border-2 w-full md:w-[70%] lg:w-[50%] mx-auto">
-        <h2 className="text-center text-xl p-2 font-bold">
-          Employee Registration Form
-        </h2>
-        <div className="mx-5 pt-5 flex flex-col  pb-5">
-
+        <h2 className="text-center text-xl p-2 font-bold">Employee Registration Form</h2>
+        <div className="mx-5 pt-5 flex flex-col pb-5">
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-5 ">
+            <div className="flex gap-5">
               <div className="w-full flex flex-col gap-2">
                 <label className="font-medium mt-1">First Name</label>
                 <input
@@ -90,9 +88,7 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
                 >
                   <option value="">Select Department</option>
                   {departmentList.map((dept, index) => (
-                    <option key={index} value={dept}>
-                      {dept}
-                    </option>
+                    <option key={index} value={dept.name}>{dept.name}</option>
                   ))}
                 </select>
               </div>
@@ -110,7 +106,7 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
               </div>
             </div>
 
-            <div className="flex gap-5 ">
+            <div className="flex gap-5">
               <div className="w-full flex flex-col gap-2">
                 <label className="font-medium mt-3">Mobile No</label>
                 <input
@@ -124,19 +120,47 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
                 />
               </div>
               <div className="w-full flex flex-col gap-2">
-                <label className="font-medium mt-3">Date of Joining</label>
+                <label className="font-medium mt-3">Joining Date</label>
                 <input
                   type="date"
-                  name="dateOfJoining"
-                  value={employee.dateOfJoining}
+                  name="joiningDate"
+                  value={employee.joiningDate}
                   onChange={handleChange}
                   required
+                  placeholder="Joining Date"
                   className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex gap-5 ">
+            <div className="flex gap-5">
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Email Id</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={employee.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="Email Id"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
+                />
+              </div>
+              <div className="w-full flex flex-col gap-2">
+                <label className="font-medium mt-3">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={employee.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="Password"
+                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-5">
               <div className="w-full flex flex-col gap-2">
                 <label className="font-medium mt-3">State</label>
                 <input
@@ -163,53 +187,29 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
               </div>
             </div>
 
-            <div className="flex gap-5 ">
+            <div className="flex gap-5">
               <div className="w-full flex flex-col gap-2">
                 <label className="font-medium mt-3">Address</label>
                 <textarea
+                  type="text"
                   name="address"
                   value={employee.address}
                   onChange={handleChange}
                   required
                   placeholder="Address"
                   className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
-                ></textarea>
+                />
               </div>
             </div>
 
-            <div className="flex gap-5 ">
-              <div className="w-full flex flex-col gap-2">
-                <label className="font-medium mt-3">User Email</label>
-                <input
-                  type="text"
-                  name="email"
-                  value={employee.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="Username"
-                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
-                />
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <label className="font-medium mt-3">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={employee.password}
-                  onChange={handleChange}
-                  required
-                  placeholder="Password"
-                  className="w-full border-2 border-gray-400 p-1 rounded-md text-sm outline-none"
-                />
-              </div>
+            <div className="flex flex-col items-center justify-center">
+              <button
+                type="submit"
+                className="bg-blue-600 w-full p-2 rounded-md text-white mt-4"
+              >
+                Register
+              </button>
             </div>
-            
-            <button
-              type="submit"
-              className="bg-blue-500 text-white p-2 font-bold mt-5"
-            >
-              Submit
-            </button>
           </form>
         </div>
       </div>

@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate()
 
-
   const handleLogout = async ()=>{
     try {
      await auth.signOut()
