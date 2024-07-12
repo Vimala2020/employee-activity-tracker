@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 const AddDepartment = ({ addDepartment }) => {
   const [departmentName, setDepartmentName] = useState('');
-  const [addedSuccessfully, setAddedSuccessfully] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/department/add', { name: departmentName });
+      await addDepartment(departmentName);
       setDepartmentName('');
-      setAddedSuccessfully(true);
-      toast.success(response.data.message);
+      toast.success('Department added successfully');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error adding department');
-      setDepartmentName(''); // Clear input on error
+      toast.error('Error adding department');
     }
   };
 

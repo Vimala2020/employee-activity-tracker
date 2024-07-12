@@ -1,27 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { MdDeleteForever } from 'react-icons/md';
-import axios from 'axios';
 
-const ManageEmployee = ({ deleteEmployee }) => {
-  const [employees, setEmployees] = useState([]);
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/employee');
-        setEmployees(response.data);
-      } catch (error) {
-        console.error('Error fetching employees:', error);
-      }
-    };
-    
-    fetchEmployees();
-  }, []);
+const ManageEmployee = ({employees, deleteEmployee }) => {
+ 
 
   const handleDelete = async (id) => {
     try {
-      await deleteEmployee(id); // Assuming deleteEmployee makes a DELETE request
-      setEmployees(employees.filter(employee => employee._id !== id));
+      await deleteEmployee(id); // Assuming deleteEmployee makes a DELETE request      
     } catch (error) {
       console.error('Error deleting employee:', error);
     }
