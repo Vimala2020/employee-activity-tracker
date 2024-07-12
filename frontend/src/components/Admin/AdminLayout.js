@@ -28,10 +28,18 @@ const AdminLayout = () => {
       }
     };
 
-    fetchDepartments();
-  }, []);
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/employee');
+        setEmployees(response.data);
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
 
-  
+    fetchDepartments();
+    fetchEmployees();
+  }, []);
 
   const addDepartment = async (newDepartment) => {
     try {
@@ -87,9 +95,6 @@ const AdminLayout = () => {
       toast.error(error.response?.data?.message || 'Error deleting employee');
     }
   };
-  
-  
-  
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);

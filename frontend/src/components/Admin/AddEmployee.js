@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from '../Auth/Firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
+
 const AddEmployee = ({ addEmployee, departmentList }) => {
   const initialEmployeeState = {
     firstName: "",
@@ -32,6 +33,7 @@ const AddEmployee = ({ addEmployee, departmentList }) => {
       setEmployee(initialEmployeeState); // Reset the form fields after submission
     } catch (error) {
       console.log('Error creating user', error);
+      alert(error)
     }
   };
 

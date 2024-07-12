@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const employeeRoutes = require('./src/routes/employee');
 const attendanceRoutes = require('./src/routes/attendance');
 const progressRoutes = require('./src/routes/WorkProgress');
 const departmentRoutes = require('./routes/department');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 dotenv.config();
 
@@ -30,10 +30,11 @@ db.once('open', () => {
 
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/progress', progressRoutes);
-app.use('/api/employee', employeeRoutes);
+
 
 
 app.use('/api/department', departmentRoutes);
+app.use('/api/employee', employeeRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
