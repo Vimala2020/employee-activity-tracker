@@ -32,6 +32,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/progress', progressRoutes);
 
 
+//admin routes
 
 app.use('/api/department', departmentRoutes);
 app.use('/api/employee', employeeRoutes);
