@@ -11,7 +11,7 @@ const employeeSchema = new mongoose.Schema({
   city: { type: String, required: true },
   address: { type: String, required: true },
   id: { type: String, required: true },
-  firebaseId: { type: String, required: true }, // Firebase UID
+  firebaseId: { type: String, required: true },
 });
 
 const Employee = mongoose.model('Employee', employeeSchema);
