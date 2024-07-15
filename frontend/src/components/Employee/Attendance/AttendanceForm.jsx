@@ -1,6 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
+
+import React, { useState } from 'react';
+// import axios from 'axios';
+
 
 const AttendanceForm = () => {
   const [status, setStatus] = useState('');

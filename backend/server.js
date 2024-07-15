@@ -5,6 +5,11 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const attendanceRoutes = require('./src/routes/attendance');
 
+const progressRoutes = require('./src/routes/WorkProgress');
+const departmentRoutes = require('./routes/department');
+const employeeRoutes = require('./routes/employeeRoutes');
+
+
 dotenv.config();
 
 const app = express();
@@ -18,6 +23,13 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api/attendance', attendanceRoutes);
+
+app.use('/api/progress', progressRoutes);
+
+//admin routes
+app.use('/api/department', departmentRoutes);
+app.use('/api/employee', employeeRoutes);
+
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
