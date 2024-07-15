@@ -1,9 +1,9 @@
 const Attendance = require('../models/Attendance');
 
-exports.markAttendance = async (req, res) => {
-  const { userId, status } = req.body;
+exports.markAttendance = async function(req, res) {
+  const { userId, status, username } = req.body;
   try {
-    const attendance = new Attendance({ userId, status });
+    const attendance = new Attendance({ userId, status, username, date: new Date() });
     await attendance.save();
     res.status(201).json({ message: 'Attendance marked successfully' });
   } catch (err) {
@@ -11,7 +11,7 @@ exports.markAttendance = async (req, res) => {
   }
 };
 
-exports.getAttendance = async (req, res) => {
+exports.getAttendance = async function(req, res) {
   const { userId } = req.params;
   try {
     const attendance = await Attendance.find({ userId });
@@ -20,3 +20,4 @@ exports.getAttendance = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
