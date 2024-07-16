@@ -10,8 +10,9 @@ const WorkProgressList = ({ progresses }) => {
           {progresses.map((progress, index) => (
             <li key={index} className="p-4 bg-gray-100 rounded-md">
               <p className="text-gray-800 font-semibold">{progress.date}</p>
-              <p className="text-gray-600">{progress.progress}</p>
-              <p className="text-gray-500 text-sm">Employee ID: {progress.employeeId}</p>
+              <p className="text-gray-600">{progress.workSummary}</p>
+              <p className="text-gray-500 text-sm">Employee ID: {progress.userId}</p>
+              <p className="text-gray-500 text-sm">Username: {progress.username}</p>
             </li>
           ))}
         </ul>
@@ -21,4 +22,3 @@ const WorkProgressList = ({ progresses }) => {
 };
 
 export default WorkProgressList;
-

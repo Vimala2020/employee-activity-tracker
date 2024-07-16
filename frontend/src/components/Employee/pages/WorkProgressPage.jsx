@@ -1,12 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WorkProgressForm from '../Workprogress/WorkprogressForm';
 import WorkProgressList from '../Workprogress/WorkprogressList';
+import axios from 'axios';
+import { getAuth } from 'firebase/auth';
 
 const Workprogress = () => {
   const [progresses, setProgresses] = useState([]);
+  const [user, setUser] = useState({});
 
-  const handleProgressSubmit = (progress) => {
-    setProgresses([...progresses, progress]);
+  useEffect(() => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setUser({ uid: currentUser.uid, name: currentUser.displayName });
+      fetchProgresses(currentUser.uid);
+    }
+  }, []);
+
+  const fetchProgresses = async (userId) => {
+    try {
+      const response = await axios.get(`/api/workprogress/${userId}`);
+      setProgresses(response.data);
+    } catch (error) {
+      console.error('Error fetching progress:', error);
+    }
+  };
+
+  const handleProgressSubmit = async (progress) => {
+    try {
+      await axios.post('/api/workprogress/submit', progress);
+      fetchProgresses(user.uid);
+    } catch (error) {
+      console.error('Error submitting progress:', error);
+    }
   };
 
   return (

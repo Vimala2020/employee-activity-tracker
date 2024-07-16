@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const attendanceRoutes = require('./src/routes/attendance');
-
+const workProgressRoutes = require('./src/routes/WorkProgress');
 dotenv.config();
 
 const app = express();
@@ -18,6 +18,7 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/workprogress', workProgressRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
