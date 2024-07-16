@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+// import axios from 'axios';
 import AttendanceList from '../Attendance/AttendanceList';
 import AttendanceForm from '../Attendance/AttendanceForm';
 
 const AttendancePage = () => {
-  const [attendances, setAttendances] = useState([]);
+  const [attendances] = useState([]);
 
-  useEffect(() => {
-    axios.get('/api/attendance')
-      .then(response => setAttendances(response.data))
-      .catch(error => console.error('Error fetching attendance data:', error));
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/api/attendance')
+  //     .then(response => setAttendances(response.data))
+  //     .catch(error => console.error('Error fetching attendance data:', error));
+  // }, []);
 
   return (
     <div className="container mx-auto p-4">

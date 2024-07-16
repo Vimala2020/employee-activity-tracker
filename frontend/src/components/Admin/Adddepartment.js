@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
-const Adddepartment = ({ adddepartment }) => {
+const AddDepartment = ({ addDepartment }) => {
   const [departmentName, setDepartmentName] = useState('');
-  const [message, setMessage] = useState({ text: '', type: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      adddepartment(departmentName);
-      setMessage({ text: 'Department successfully added!', type: 'success' });
+      await addDepartment(departmentName);
       setDepartmentName('');
+      toast.success('Department added successfully');
     } catch (error) {
-      setMessage({ text: 'Error adding department. Please try again.', type: 'error' });
+      toast.error('Error adding department');
     }
-    setTimeout(()=>{
-      setMessage({text:'',type:''})
-    },3000)
   };
 
   return (
@@ -34,15 +31,10 @@ const Adddepartment = ({ adddepartment }) => {
             onChange={(e) => setDepartmentName(e.target.value)}
           />
           <button type='submit' className='bg-blue-500 text-white p-2 rounded-md'>Add</button>
-          {message.text && (
-            <p className={`mt-2 ${message.type === 'success' ? 'text-green-600  font-bold ' : 'text-red-500 font-bold'}`}>
-              {message.text}
-            </p>
-          )}
         </form>
       </div>
     </div>
   );
 };
 
-export default Adddepartment;
+export default AddDepartment;
