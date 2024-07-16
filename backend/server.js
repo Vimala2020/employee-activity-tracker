@@ -4,11 +4,10 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const attendanceRoutes = require('./src/routes/attendance');
-
+const workProgressRoutes = require('./src/routes/WorkProgress');
 const progressRoutes = require('./src/routes/WorkProgress');
 const departmentRoutes = require('./routes/department');
 const employeeRoutes = require('./routes/employeeRoutes');
-
 
 dotenv.config();
 
@@ -23,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/workprogress', workProgressRoutes);
 
 app.use('/api/progress', progressRoutes);
 

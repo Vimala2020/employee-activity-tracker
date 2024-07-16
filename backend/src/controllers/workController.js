@@ -1,9 +1,9 @@
 const WorkProgress = require('../models/WorkProgress');
 
 exports.submitWorkProgress = async (req, res) => {
-  const { userId, workSummary } = req.body;
+  const { userId, username, workSummary } = req.body;
   try {
-    const workProgress = new WorkProgress({ userId, workSummary });
+    const workProgress = new WorkProgress({ userId, username, workSummary });
     await workProgress.save();
     res.status(201).json({ message: 'Work progress submitted successfully' });
   } catch (err) {
