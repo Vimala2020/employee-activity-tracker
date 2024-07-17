@@ -6,17 +6,17 @@ import user from '../assets/user.png';
 const Banner = () => {
   return (
     <div className="h-screen flex justify-center items-center flex-col gap-16 bg-[#fafafa]">
-      <div className="flex justify-between items-center mx-10">
+      <div className="flex  md:justify-between items-center mx-10">
         <div className="w-full">
-          <h1 className="text-9xl text-blue-500 text-center font-semibold">Employee</h1>
-          <h2 className="text-8xl mt-10 text-center">Attendance Tracker</h2>
+          <h1 className="text-3xl lg:text-5xl xl:text-9xl text-blue-500 text-center font-semibold">Employee</h1>
+          <h2 className="text-2xl lg:text-5xl xl:text-8xl mt-6 text-center">Attendance Tracker</h2>
         </div>
-        <div className="w-[50%]">
+        <div className="hidden md:flex w-[50%]">
           <img src="https://www.softworks.com/wp-content/uploads/2023/11/Strategies-for-Improving-Employee-Attendance-Blog-Image.png" alt="" className="rounded-md" />
         </div>
       </div>
       <div className="flex justify-center mt-5">
-        <div className="flex justify-center gap-10 w-full">
+        <div className="flex flex-wrap justify-center gap-8 mx-10">
           <Link to="/login">
             <div className="border-2 rounded-md p-5 flex flex-col justify-center items-center gap-8 w-48 shadow-xl hover:shadow-inner">
               <img src={admin} alt="admin" className="w-14" />
