@@ -1,7 +1,7 @@
 const Attendance = require('../models/Attendance');
 
 exports.markAttendance = async function(req, res) {
-  const { userId, status, username } = req.body;
+  const { userId, username, status } = req.body;
   try {
     const attendance = new Attendance({ userId, status, username, date: new Date() });
     await attendance.save();
@@ -20,4 +20,3 @@ exports.getAttendance = async function(req, res) {
     res.status(500).json({ error: err.message });
   }
 };
-

@@ -19,7 +19,7 @@ const Workprogress = () => {
 
   const fetchProgresses = async (userId) => {
     try {
-      const response = await axios.get(`/api/workprogress/${userId}`);
+      const response = await axios.get(`http://localhost:5000/api/workprogress/${userId}`);
       setProgresses(response.data);
     } catch (error) {
       console.error('Error fetching progress:', error);
@@ -28,7 +28,7 @@ const Workprogress = () => {
 
   const handleProgressSubmit = async (progress) => {
     try {
-      await axios.post('/api/workprogress/submit', progress);
+      await axios.post('http://localhost:5000/api/workprogress/submit', progress);
       fetchProgresses(user.uid);
     } catch (error) {
       console.error('Error submitting progress:', error);

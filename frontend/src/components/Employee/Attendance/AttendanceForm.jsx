@@ -1,13 +1,8 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
-import React, { useState } from 'react';
-// import axios from 'axios';
-
-
-const AttendanceForm = () => {
+const AttendanceForm = ({ onAttendanceMarked }) => {
   const [status, setStatus] = useState('');
   const auth = getAuth();
 
@@ -24,8 +19,9 @@ const AttendanceForm = () => {
         username: user.displayName,
         status,
       };
-      const response = await axios.post('/api/attendance/mark', attendance);
+      const response = await axios.post('http://localhost:5000/api/attendance/mark', attendance);
       console.log(response.data.message);
+      onAttendanceMarked();
     } catch (error) {
       console.error('Error marking attendance:', error);
     }

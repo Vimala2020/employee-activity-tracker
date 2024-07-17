@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const attendanceRoutes = require('./src/routes/attendance');
 const workProgressRoutes = require('./src/routes/WorkProgress');
-const progressRoutes = require('./src/routes/WorkProgress');
 const departmentRoutes = require('./routes/department');
 const employeeRoutes = require('./routes/employeeRoutes');
 
@@ -23,13 +22,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/workprogress', workProgressRoutes);
-
-app.use('/api/progress', progressRoutes);
-
-//admin routes
 app.use('/api/department', departmentRoutes);
 app.use('/api/employee', employeeRoutes);
-
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
