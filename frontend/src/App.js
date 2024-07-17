@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Banner from './pages/Banner';
+import Banner from '../src/components/Employee/pages/Banner';
 import AdminLayout from './components/Admin/AdminLayout';
 import EmployeeDashboard from './components/Employee/EmployeeDashboard';
 import Login from './components/Auth/Login';

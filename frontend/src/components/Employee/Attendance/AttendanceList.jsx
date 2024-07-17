@@ -12,7 +12,7 @@ const AttendanceList = ({ attendances }) => {
             const date = new Date(attendance.date).toLocaleDateString();
             return (
               <li key={index} className="text-gray-700">
-                {date} - {attendance.status} {attendance.user ? `- ${attendance.user.name}` : ''}
+                {date} - {attendance.status} {attendance.username ? `- ${attendance.username}` : ''}
               </li>
             );
           })}
@@ -27,9 +27,7 @@ AttendanceList.propTypes = {
     PropTypes.shape({
       date: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
-      user: PropTypes.shape({
-        name: PropTypes.string,
-      }),
+      username: PropTypes.string,
     })
   ).isRequired,
 };
