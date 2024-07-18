@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import admin from '../../../assets/admin.png';
-import user from '../../../assets/user.png';
+import admin from '../assets/admin.png';
+import user from '../assets/user.png';
 
 const Banner = () => {
   return (
