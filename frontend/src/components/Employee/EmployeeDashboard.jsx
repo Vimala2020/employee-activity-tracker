@@ -3,15 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import AttendancePage from '../../components/Employee/pages/AttendancePage';
-import WorkProgressPage from '../../components/Employee/pages/WorkProgressPage';
-import Profile from './Profile';
 import Logout from '../Auth/Logout';
+import AttendanceForm from '../Employee/AttendanceForm'
+import WorkprogressForm from './WorkprogressForm';
 
 const EmployeeDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState({});
-  const [recentActivities, setRecentActivities] = useState([]);
+ 
 
 
   const toggleSidebar = () => {
@@ -45,7 +44,6 @@ const EmployeeDashboard = () => {
             <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Personal Info</h2>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>UID:</strong> {user.uid}</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Job Details</h2>
@@ -55,9 +53,8 @@ const EmployeeDashboard = () => {
           </div>
          
           <Routes>
-            <Route path="attendance/*" element={<AttendancePage />} />
-            <Route path="work-progress/*" element={<WorkProgressPage />} />
-            <Route path="profile" element={<Profile user={user} updateUser={updateUser} />} />
+            <Route path="attendance/*" element={<AttendanceForm />} />
+            <Route path="work-progress/*" element={<WorkprogressForm />} />
           </Routes>
         </main>
       </div>
