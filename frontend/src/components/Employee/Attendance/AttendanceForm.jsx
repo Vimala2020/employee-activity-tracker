@@ -5,9 +5,6 @@ import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
 const AttendanceForm = ({ onAttendanceMarked }) => {
-
-
-const AttendanceForm = () => {
   const [status, setStatus] = useState('');
   const auth = getAuth();
 
