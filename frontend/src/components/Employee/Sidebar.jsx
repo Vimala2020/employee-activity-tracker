@@ -4,6 +4,7 @@ import { TfiDashboard } from 'react-icons/tfi';
 import { IoIosPrint } from 'react-icons/io';
 import { MdOutlineClose } from 'react-icons/md';
 import { PiNotepadThin } from 'react-icons/pi';
+import { FaRegFileAlt } from 'react-icons/fa'; 
 import user from '../../assets/user.png';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -47,12 +48,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </Link>
             </div>
           </div>
-
-          <div className="flex gap-3 items-center text-white mt-5">
-            <IoIosPrint size={24} />
-            <Link to="/employee/profile" onClick={() => toggleSidebar()}>
-              <h3 className="text-base font-semibold cursor-pointer">Profile</h3>
-            </Link>
+          <div className="flex flex-col gap-3 mt-5">
+            <div className="flex gap-3 items-center text-white cursor-pointer" onClick={() => handleToggle('report')}>
+              <FaRegFileAlt size={24} />
+              <Link to="/employee/report/report-form" onClick={() => toggleSidebar()}>
+                <h3 className="text-base font-semibold">Report</h3>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

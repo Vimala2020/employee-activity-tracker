@@ -9,6 +9,8 @@ const AttendanceForm = () => {
   const [status, setStatus] = useState('');
   const [attendances, setAttendances] = useState([]);
   const [user, setUser] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitTime, setSubmitTime] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -24,6 +26,18 @@ const AttendanceForm = () => {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (submitTime) {
+      const now = new Date();
+      const timePassed = now - new Date(submitTime);
+      const hoursPassed = timePassed / (1000 * 60 * 60);
+      
+      if (hoursPassed >= 18) {
+        setIsSubmitted(false);
+      }
+    }
+  }, [submitTime]);
 
   const fetchAttendance = async (userID) => {
     try {
@@ -43,6 +57,8 @@ const AttendanceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
+    setSubmitTime(new Date());
     try {
       const user = auth.currentUser;
       if (!user) {
@@ -55,12 +71,14 @@ const AttendanceForm = () => {
         status,
       };
       console.log('Submitting attendance data:', attendanceData); // Debug log
-      const response = await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
+      await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
       toast.success('Employee successfully marked attendance');
       fetchAttendance(user.uid); // Update attendance list after marking
       setStatus(''); // Clear status after submission
     } catch (error) {
       toast.error('Please try again..!');
+    } finally {
+      console.log('Submission completed'); // Debug log
     }
   };
 
@@ -79,6 +97,7 @@ const AttendanceForm = () => {
               value={status}
               onChange={handleChange}
               required
+              disabled={isSubmitted} // Disable status selection after submission
             >
               <option value="">Select Status</option>
               <option value="present">Present</option>

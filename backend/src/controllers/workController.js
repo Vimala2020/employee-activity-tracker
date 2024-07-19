@@ -1,25 +1,29 @@
-const WorkProgress = require('../models/WorkProgress');
+const Progresses = require('../models/Progresses');
 
-exports.submitWorkProgress = async (req, res) => {
+exports.submitProgresses = async function (req, res) {
   const { userId, work } = req.body;
   try {
-    const workProgress = new WorkProgress({ userId, work});
-    console.log('Saving work record:', work)
-    await workProgress.save();
+    if (!userId || !work) {
+      throw new Error("Missing required fields: userId, or work");
+    }
+    const progresses = new Progresses({ userId, work });
+    console.log('Saving work record:', progresses);
+    await progresses.save();
     res.status(201).json({ message: 'Work progress submitted successfully' });
   } catch (err) {
-    console.error('Error marking work:', err.message)
+    console.error('Error marking work:', err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.getWorkProgress = async (req, res) => {
+exports.getProgresses = async function (req, res) {
   const { userId } = req.params;
   try {
-    console.log('Fetching attendance for user:', userId); 
-    const workProgress = await WorkProgress.find({ userId });
-    res.status(200).json(workProgress);
+    console.log('Fetching attendance for user:', userId);
+    const progresses = await Progresses.find({ userId });
+    res.status(200).json(progresses);
   } catch (err) {
+    console.error('Error fetching attendance:', err.message);
     res.status(500).json({ error: err.message });
   }
 };
