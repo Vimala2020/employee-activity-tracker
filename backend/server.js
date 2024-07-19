@@ -9,9 +9,6 @@ const workProgressRoutes = require('./src/routes/WorkProgress');
 const departmentRoutes = require('./routes/department');
 const employeeRoutes = require('./routes/employeeRoutes');
 
-
-
-
 dotenv.config();
 
 const app = express();
