@@ -4,7 +4,7 @@ import Banner from './components/Banner';
 import AdminLayout from './components/Admin/AdminLayout';
 import EmployeeDashboard from './components/Employee/EmployeeDashboard';
 import Login from './components/Auth/Login';
-import EmployeeLogin from './components/Employee/EmployeeLogin';
+import EmployeeLogin from './components/Auth/EmployeeLogin';
 import ErrorBoundary from './ErrorBoundary';
 
 const App = () => {

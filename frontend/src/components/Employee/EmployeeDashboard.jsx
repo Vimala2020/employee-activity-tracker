@@ -4,14 +4,21 @@ import { getAuth } from 'firebase/auth';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Logout from '../Auth/Logout';
-import AttendanceForm from '../Employee/AttendanceForm'
+import AttendanceForm from '../Employee/AttendanceForm';
 import WorkprogressForm from './WorkprogressForm';
+import Report from './Report';
+import axios from 'axios';
 
 const EmployeeDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState({});
- 
-
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    uid: '',
+    mobile: '',
+    department: '',
+    joiningDate: '',
+  });
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -19,19 +26,32 @@ const EmployeeDashboard = () => {
 
   useEffect(() => {
     const auth = getAuth();
-    const user = auth.currentUser;
-    if (user) {
-      setUser({ name: user.displayName, email: user.email, uid: user.uid });
-      // Fetch recent activities
-     
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setUser({
+        ...user,
+        name: currentUser.displayName,
+        email: currentUser.email,
+        uid: currentUser.uid,
+      });
+      // Fetch additional details
+      fetchAdditionalDetails(currentUser.uid);
     }
   }, []);
 
-  const updateUser = (updatedUser) => {
-    setUser(updatedUser);
+  const fetchAdditionalDetails = async (uid) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/employee/${uid}`);
+      setUser((prevUser) => ({
+        ...prevUser,
+        mobile: response.data.mobile,
+        department: response.data.department,
+        joiningDate: response.data.joiningDate,
+      }));
+    } catch (error) {
+      console.error('Error fetching additional details:', error);
+    }
   };
-
-  
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -44,6 +64,7 @@ const EmployeeDashboard = () => {
             <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Personal Info</h2>
               <p><strong>Email:</strong> {user.email}</p>
+              <p><strong>Mobile:</strong> {user.mobile}</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Job Details</h2>
@@ -51,10 +72,11 @@ const EmployeeDashboard = () => {
               <p><strong>Joining Date:</strong> {user.joiningDate}</p>
             </div>
           </div>
-         
+
           <Routes>
             <Route path="attendance/*" element={<AttendanceForm />} />
             <Route path="work-progress/*" element={<WorkprogressForm />} />
+            <Route path="report/*" element={<Report />} />
           </Routes>
         </main>
       </div>

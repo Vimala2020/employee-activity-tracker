@@ -49,7 +49,7 @@ const WorkprogressForm = () => {
       }
       const progressData = {
         userId: user.uid,
-        work,
+        work,  // Make sure this field matches the schema and controller
       };
       console.log('Submitting work:', progressData);
       const response = await axios.post('http://localhost:5000/api/workprogress/submit', progressData);
@@ -61,6 +61,7 @@ const WorkprogressForm = () => {
       toast.error('Please try again..!');
     }
   };
+  
 
   return (
     <div className="container mx-auto p-4">
