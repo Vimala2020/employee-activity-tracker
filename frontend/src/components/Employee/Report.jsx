@@ -1,173 +1,125 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { auth } from '../Auth/Firebase'; 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../Auth/Firebase';
 
 const Report = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [period, setPeriod] = useState('');
-  const [reportData, setReportData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [progresses, setProgresses] = useState([]);
+  const [filteredProgresses, setFilteredProgresses] = useState([]);
+  const [attendances, setAttendances] = useState([]);
+  const [filteredAttendances, setFilteredAttendances] = useState([]);
+  const [user, setUser] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
-    console.log("Report Component Rendered");
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('Auth state changed. Current user:', currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+        fetchProgresses(currentUser.uid);
+        fetchAttendance(currentUser.uid);
+      } else {
+        setUser(null);
+        setProgresses([]);
+        setFilteredProgresses([]);
+        setAttendances([]);
+        setFilteredAttendances([]);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handlePeriodChange = (e) => {
-    const period = e.target.value;
-    setPeriod(period);
-    console.log('Period set to:', period);
-    const end = new Date();
-    let start;
+  useEffect(() => {
+    filterDataByDate();
+  }, [selectedDate, progresses, attendances]);
 
-    switch (period) {
-      case '1w':
-        start = new Date(end);
-        start.setDate(end.getDate() - 7);
-        break;
-      case '1m':
-        start = new Date(end);
-        start.setMonth(end.getMonth() - 1);
-        break;
-      case '3m':
-        start = new Date(end);
-        start.setMonth(end.getMonth() - 3);
-        break;
-      default:
-        setStartDate('');
-        setEndDate('');
-        return;
+  const fetchProgresses = async (userID) => {
+    try {
+      console.log('Fetching progress for userID:', userID);
+      const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`);
+      setProgresses(response.data);
+      console.log('Progress data:', response.data);
+    } catch (error) {
+      console.error('Error fetching progress data:', error);
     }
-
-    setStartDate(start.toISOString().split('T')[0]);
-    setEndDate(end.toISOString().split('T')[0]);
-    console.log('Start Date:', start.toISOString().split('T')[0], 'End Date:', end.toISOString().split('T')[0]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!startDate || !endDate) {
-      toast.error('Please select a valid date range');
-      return;
-    }
-
-    setLoading(true);
+  const fetchAttendance = async (userID) => {
     try {
-      const user = auth.currentUser;
-      if (!user) {
-        throw new Error('User not authenticated');
-      }
-      const response = await axios.get(`http://localhost:5000/api/attendance/report`, {
-        params: {
-          userId: user.uid,
-          startDate,
-          endDate
-        }
-      });
-      console.log('API Response:', response.data); // Log the response
-      setReportData(response.data);
-      toast.success('Report fetched successfully');
+      console.log('Fetching attendance for userID:', userID);
+      const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`);
+      setAttendances(response.data);
+      console.log('Attendance data:', response.data);
     } catch (error) {
-      toast.error('Failed to fetch report');
-      console.error('Error fetching report:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching attendance data:', error);
     }
+  };
+
+  const filterDataByDate = () => {
+    if (selectedDate) {
+      const filteredProgresses = progresses.filter(progress =>
+        new Date(progress.date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
+      );
+      const filteredAttendances = attendances.filter(attendance =>
+        new Date(attendance.date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
+      );
+      setFilteredProgresses(filteredProgresses);
+      setFilteredAttendances(filteredAttendances);
+    } else {
+      setFilteredProgresses(progresses);
+      setFilteredAttendances(attendances);
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const date = e.target.value;
+    setSelectedDate(date);
   };
 
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Attendance Report</h1>
-        <form onSubmit={handleSubmit} className="mb-6">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="period">
-              Select Period
-            </label>
-            <select
-              id="period"
-              value={period}
-              onChange={handlePeriodChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="">Select Period</option>
-              <option value="1w">Last 1 Week</option>
-              <option value="1m">Last 1 Month</option>
-              <option value="3m">Last 3 Months</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
-              Start Date
-            </label>
-            <input
-              type="date"
-              id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endDate">
-              End Date
-            </label>
-            <input
-              type="date"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Get Info'}
-          </button>
-        </form>
-        <div>
-          {reportData.length > 0 && (
-            <div>
-              <h2 className="text-xl font-bold mb-2">Report Details</h2>
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Work Summary
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {reportData.map((item) => (
-                    <tr key={item.date}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {item.date}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {item.status}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {item.workSummary}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+        <h1 className="text-2xl font-bold mb-4"> Report</h1>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Please select a Date</h2>
+          <input
+            type="date"
+            onChange={handleDateChange}
+            value={selectedDate}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Work Progress List</h2>
+          <ul className="list-disc pl-5">
+            {filteredProgresses.length > 0 ? (
+              filteredProgresses.map((progress, index) => (
+                <li key={index} className="mb-2">
+                  <span className="font-semibold">{new Date(progress.date).toLocaleDateString()}:</span> {progress.work}
+                </li>
+              ))
+            ) : (
+              <li>No work progress data available for the selected date.</li>
+            )}
+          </ul>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Attendance List</h2>
+          <ul className="list-disc pl-5">
+            {filteredAttendances.length > 0 ? (
+              filteredAttendances.map((attendance, index) => (
+                <li key={index} className="mb-2">
+                  <span className="font-semibold">{new Date(attendance.date).toLocaleDateString()}:</span> {attendance.status}
+                </li>
+              ))
+            ) : (
+              <li>No attendance data available for the selected date.</li>
+            )}
+          </ul>
         </div>
       </div>
     </div>

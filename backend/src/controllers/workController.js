@@ -6,7 +6,7 @@ exports.submitProgresses = async function (req, res) {
     if (!userId || !work) {
       throw new Error("Missing required fields: userId, or work");
     }
-    const progresses = new Progresses({ userId, work });
+    const progresses = new Progresses({ userId, work , date: new Date() });
     console.log('Saving work record:', progresses);
     await progresses.save();
     res.status(201).json({ message: 'Work progress submitted successfully' });

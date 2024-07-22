@@ -9,6 +9,7 @@ const WorkprogressForm = () => {
   const [work, setWork] = useState('');
   const [progresses, setProgresses] = useState([]);
   const [user, setUser] = useState(null);
+  const [submitTime, setSubmitTime] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -42,14 +43,18 @@ const WorkprogressForm = () => {
 
   const handleProgressSubmit = async (e) => {
     e.preventDefault();
+    setSubmitTime(new Date())
     try {
       const user = auth.currentUser;
       if (!user) {
         throw new Error('User not authenticated');
       }
+      const date = new Date().toISOString(); // Current date and time
       const progressData = {
         userId: user.uid,
-        work,  // Make sure this field matches the schema and controller
+        date,
+        work,
+         // Include the date field
       };
       console.log('Submitting work:', progressData);
       const response = await axios.post('http://localhost:5000/api/workprogress/submit', progressData);
@@ -61,7 +66,6 @@ const WorkprogressForm = () => {
       toast.error('Please try again..!');
     }
   };
-  
 
   return (
     <div className="container mx-auto p-4">
@@ -92,4 +96,3 @@ const WorkprogressForm = () => {
 };
 
 export default WorkprogressForm;
-
