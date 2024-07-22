@@ -5,7 +5,7 @@ const Department = require('../models/Department');
 // Add a new department
 router.post('/add', async (req, res) => {
     const { name } = req.body;
-    try {
+    try {   
       // Check if department with the same name already exists
       const existingDepartment = await Department.findOne({ name });
       if (existingDepartment) {
@@ -15,7 +15,7 @@ router.post('/add', async (req, res) => {
       // Create new department
       const newDepartment = new Department({ name });
       await newDepartment.save();
-      res.status(201).json({ message: 'Department successfully added', department: newDepartment });
+      res.status(201).json({ message: 'Successfully department added', department: newDepartment });
     } catch (error) {
       console.error('Error adding department:', error);
       res.status(500).json({ message: 'Error adding department. Please try again later' });

@@ -8,8 +8,7 @@ const AddDepartment = ({ addDepartment }) => {
     e.preventDefault();
     try {
       await addDepartment(departmentName);
-      setDepartmentName('');
-      toast.success('Department added successfully');
+      setDepartmentName('');    
     } catch (error) {
       toast.error('Error adding department');
     }
