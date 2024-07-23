@@ -1,29 +1,40 @@
-const Attendance = require('../models/Attendance');
+const Attendance = require('../models/Attendance'); // Adjust the path to your Attendance model
+const sendDailyReport = require('../config/email'); // Adjust the path to your email module
 
-exports.markAttendance = async function(req, res) {
-  const { userId, status } = req.body;
+const markAttendance = async (req, res) => {
+  const attendanceData = req.body;
   try {
-    if (!userId || !status) {
-      throw new Error("Missing required fields: userId, or status");
-    }
-    const attendance = new Attendance({ userId, status, date: new Date() });
-    console.log('Saving attendance record:', attendance); // Debug log
-    await attendance.save();
-    res.status(201).json({ message: 'Attendance marked successfully' });
-  } catch (err) {
-    console.error('Error marking attendance:', err.message); // Enhanced logging
-    res.status(500).json({ error: err.message });
+    // Save attendance data to the database
+    await Attendance.create(attendanceData);
+    console.log('Attendance marked successfully');
+
+    // Generate daily report
+    const report = `User ${attendanceData.userId} marked as ${attendanceData.status} on ${attendanceData.date}`;
+
+    // Send email
+    sendDailyReport(process.env.EMAIL_MANAGER, report);
+    res.status(200).send('Attendance marked and email sent successfully.');
+  } catch (error) {
+    console.error('Error marking attendance and sending email:', error);
+    res.status(500).send('Failed to mark attendance and send email.');
   }
 };
 
-exports.getAttendance = async function(req, res) {
+const getAttendance = async (req, res) => {
   const { userId } = req.params;
   try {
-    console.log('Fetching attendance for user:', userId); // Debug log
     const attendance = await Attendance.find({ userId });
+    if (!attendance) {
+      return res.status(404).json({ message: 'No attendance records found.' });
+    }
     res.status(200).json(attendance);
-  } catch (err) {
-    console.error('Error fetching attendance:', err.message); // Enhanced logging
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error('Error fetching attendance data:', error);
+    res.status(500).send('Failed to fetch attendance data.');
   }
+};
+
+module.exports = {
+  markAttendance,
+  getAttendance
 };

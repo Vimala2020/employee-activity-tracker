@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
-const generateDailyReport = require('./report');
 
 dotenv.config();
 
@@ -15,18 +14,18 @@ const transporter = nodemailer.createTransport({
 const sendDailyReport = (managerEmail, report) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: process.env.EMAIL_MANAGER,
+    to: managerEmail,
     subject: 'Daily Work and Attendance Report',
     text: report
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return console.log(error);
+      console.error('Error sending email:', error);
+      return;
     }
-    console.log('Email sent: ' + info.response);
+    console.log('Email sent successfully:', info.response);
   });
 };
-
 
 module.exports = sendDailyReport;

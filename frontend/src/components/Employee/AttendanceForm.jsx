@@ -71,8 +71,8 @@ const AttendanceForm = () => {
         status,
       };
       console.log('Submitting attendance data:', attendanceData); // Debug log
-      await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
-      toast.success('Employee successfully marked attendance');
+      const response = await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
+      toast.success(response.data); 
       fetchAttendance(user.uid); // Update attendance list after marking
       setStatus(''); // Clear status after submission
     } catch (error) {

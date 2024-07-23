@@ -8,6 +8,10 @@ const attendanceRoutes = require('./src/routes/attendance');
 const workProgressRoutes = require('./src/routes/WorkProgress');
 const departmentRoutes = require('./routes/department');
 const employeeRoutes = require('./routes/employeeRoutes');
+//const testEmailRoute = require('./src/routes/testEndPoint'); // Adjust the path accordingly
+
+
+
 
 dotenv.config();
 
@@ -25,6 +29,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/workprogress', workProgressRoutes);
 app.use('/api/department', departmentRoutes);
 app.use('/api/employee', employeeRoutes);
+//app.use('/api', testEmailRoute);
 
 
 const port = process.env.PORT || 5000;
