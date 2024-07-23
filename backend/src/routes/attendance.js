@@ -1,6 +1,7 @@
+// routes/attendance.js
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const attendanceController = require('../controllers/attendanceController');
+const attendanceController = require('../controllers/attendanceController'); // Adjust the path as needed
 
 const router = express.Router();
 

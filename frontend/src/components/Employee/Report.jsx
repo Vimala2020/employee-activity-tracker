@@ -67,8 +67,8 @@ const Report = () => {
       setFilteredProgresses(filteredProgresses);
       setFilteredAttendances(filteredAttendances);
     } else {
-      setFilteredProgresses(progresses);
-      setFilteredAttendances(attendances);
+      setFilteredProgresses([]);
+      setFilteredAttendances([]);
     }
   };
 
@@ -80,7 +80,7 @@ const Report = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4"> Report</h1>
+        <h1 className="text-2xl font-bold mb-4">Report</h1>
 
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">Please select a Date</h2>
@@ -92,35 +92,39 @@ const Report = () => {
           />
         </div>
 
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Work Progress List</h2>
-          <ul className="list-disc pl-5">
-            {filteredProgresses.length > 0 ? (
-              filteredProgresses.map((progress, index) => (
-                <li key={index} className="mb-2">
-                  <span className="font-semibold">{new Date(progress.date).toLocaleDateString()}:</span> {progress.work}
-                </li>
-              ))
-            ) : (
-              <li>No work progress data available for the selected date.</li>
-            )}
-          </ul>
-        </div>
+        {selectedDate && (
+          <>
+            <div className="mt-8">
+              <h2 className="text-xl font-bold mb-4">Work Progress List</h2>
+              <ul className="list-disc pl-5">
+                {filteredProgresses.length > 0 ? (
+                  filteredProgresses.map((progress, index) => (
+                    <li key={index} className="mb-2">
+                      <span className="font-semibold">{new Date(progress.date).toLocaleDateString()}:</span> {progress.work}
+                    </li>
+                  ))
+                ) : (
+                  <li>No work progress data available for the selected date.</li>
+                )}
+              </ul>
+            </div>
 
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Attendance List</h2>
-          <ul className="list-disc pl-5">
-            {filteredAttendances.length > 0 ? (
-              filteredAttendances.map((attendance, index) => (
-                <li key={index} className="mb-2">
-                  <span className="font-semibold">{new Date(attendance.date).toLocaleDateString()}:</span> {attendance.status}
-                </li>
-              ))
-            ) : (
-              <li>No attendance data available for the selected date.</li>
-            )}
-          </ul>
-        </div>
+            <div className="mt-8">
+              <h2 className="text-xl font-bold mb-4">Attendance List</h2>
+              <ul className="list-disc pl-5">
+                {filteredAttendances.length > 0 ? (
+                  filteredAttendances.map((attendance, index) => (
+                    <li key={index} className="mb-2">
+                      <span className="font-semibold">{new Date(attendance.date).toLocaleDateString()}:</span> {attendance.status}
+                    </li>
+                  ))
+                ) : (
+                  <li>No attendance data available for the selected date.</li>
+                )}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
