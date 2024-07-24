@@ -15,13 +15,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 h-full w-64 bg-[#35495e] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-1/4 lg:w-1/5 z-10`}>
+    <div className={`fixed top-0 left-0 h-full w-64 bg-[#2F3645] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-1/4 lg:w-1/5 z-10`}>
       <div className="relative">
         <img src={user} alt="admin" className="mx-auto mt-5 w-20 border-2 p-3 bg-white bg-opacity-80 rounded-full" />
         <MdOutlineClose size={24} className="absolute top-2 right-2 text-white cursor-pointer md:hidden" onClick={toggleSidebar} />
       </div>
       <div className="flex flex-col justify-evenly mx-10 h-[60%]">
-        <div className="mt-5">
+        <div className="mt-5 flex justify-between flex-col gap-4">
           <h2 className="text-gray-400 text-base font-semibold">Employee</h2>
           <div className="flex gap-3 items-center text-white mt-5">
             <TfiDashboard size={24} />
