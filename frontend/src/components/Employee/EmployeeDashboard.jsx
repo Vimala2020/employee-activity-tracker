@@ -56,9 +56,9 @@ const EmployeeDashboard = () => {
   return (
     <div className="flex h-screen overflow-hidden">
       <Header user={user} toggleSidebar={toggleSidebar} onLogout={Logout} />
-      <div className="flex flex-1 mt-20">
+      <div className="flex flex-1">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className="flex-1 overflow-y-auto p-4">
+        <main className="flex-1 overflow-y-auto p-4 mt-20">
           <h1 className="text-3xl font-bold mb-4">Welcome, {user.name}</h1>
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
