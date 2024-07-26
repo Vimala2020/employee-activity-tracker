@@ -32,3 +32,13 @@ exports.getProgresses = async function (req, res) {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAllProgresses = async (req, res) => {
+  try {
+    const progresses = await Progress.find();
+    res.status(200).json(progresses);
+  } catch (error) {
+    console.error('Error fetching all progress data:', error);
+    res.status(500).send('Failed to fetch progress data.');
+  }
+};

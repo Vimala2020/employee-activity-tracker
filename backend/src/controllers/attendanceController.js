@@ -34,7 +34,27 @@ const getAttendance = async (req, res) => {
   }
 };
 
+
+const getAllAttendance = async (req, res) => {
+  try {
+    console.log('Fetching all attendance records');
+    const attendance = await Attendance.find();
+    if (!attendance || attendance.length === 0) {
+      console.log('No attendance records found');
+      return res.status(404).json({ message: 'No attendance records found.' });
+    }
+    console.log('Fetched attendance records:', attendance);
+    res.status(200).json(attendance);
+  } catch (error) {
+    console.error('Error fetching all attendance data:', error);
+    res.status(500).send('Failed to fetch attendance data.');
+  }
+};
+
+
+
 module.exports = {
   markAttendance,
-  getAttendance
+  getAttendance,
+  getAllAttendance,
 };
