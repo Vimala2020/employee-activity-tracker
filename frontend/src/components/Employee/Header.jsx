@@ -5,7 +5,7 @@ import Logout from '../Auth/Logout';
 
 const Header = ({ user, toggleSidebar }) => {
   return (
-    <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-400 to-blue-500 text-white p-6 shadow-lg z-20">
+    <header className="fixed top-0 w-full md:w-[75%] lg:w-[80%] right-0 bg-[#E6B9A6] p-3 shadow-lg ">
       <div className="container mx-auto flex justify-between items-center">
         <MdMenu size={24} className="cursor-pointer md:hidden" onClick={toggleSidebar} />
         <h1 className="text-2xl font-bold tracking-wide">Employee Dashboard</h1>

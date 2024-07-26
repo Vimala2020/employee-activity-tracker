@@ -1,6 +1,7 @@
+// routes/workProgress.js
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const workController = require('../controllers/workController');
+const workController = require('../controllers/workController'); // Ensure path is correct
 const router = express.Router();
 
 const validateProgresses = [
@@ -17,5 +18,6 @@ router.post('/submit', validateProgresses, (req, res, next) => {
 }, workController.submitProgresses);
 
 router.get('/:userId', workController.getProgresses);
+router.get('/all', workController.getAllProgresses); // Ensure this route is correct
 
 module.exports = router;

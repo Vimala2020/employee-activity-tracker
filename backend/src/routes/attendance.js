@@ -19,6 +19,7 @@ router.post('/mark', validateAttendance, (req, res, next) => {
   next();
 }, attendanceController.markAttendance);
 
+router.get('/all', attendanceController.getAllAttendance);
 router.get('/:userId', attendanceController.getAttendance);
 
 module.exports = router;

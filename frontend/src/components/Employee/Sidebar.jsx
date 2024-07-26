@@ -21,7 +21,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <MdOutlineClose size={24} className="absolute top-2 right-2 text-white cursor-pointer md:hidden" onClick={toggleSidebar} />
       </div>
       <div className="flex flex-col justify-evenly mx-10 h-[60%]">
-        <div className="mt-5">
+        <div className="mt-5 flex justify-between flex-col gap-4">
           <h2 className="text-gray-400 text-base font-semibold">Employee</h2>
           <div className="flex gap-3 items-center text-white mt-5">
             <TfiDashboard size={24} />
