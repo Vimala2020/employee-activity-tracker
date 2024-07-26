@@ -16,8 +16,8 @@ const ManageEmployee = ({employees, deleteEmployee }) => {
   return (
     <div className="">
       <h2 className="text-center font-bold text-xl mt-5">Employee List</h2>
-      <div className="mt-5 overflow-x-auto">
-        <div className="flex bg-gray-100 font-bold text-sm">
+      <div className="mt-5 overflow-x-auto ">
+        <div className=" bg-gray-100 font-bold text-sm hidden lg:flex">
           <div className="w-1/12 px-4 py-2">Sno</div>
           <div className="w-1/12 px-4 py-2">ID</div>
           <div className="w-3/12 px-4 py-2">Name</div>
@@ -28,18 +28,26 @@ const ManageEmployee = ({employees, deleteEmployee }) => {
         </div>
         <div>
           {employees.map((employee, index) => (
-            <div key={employee._id} className="flex items-center justify-between border-b border-gray-200 py-2">
-              <div className="w-1/12 px-4">{index + 1}</div>
-              <div className="w-1/12 px-4">{employee.id}</div>
-              <div className="w-full md:w-3/12 px-4">{`${employee.firstName} ${employee.lastName}`}</div>
-              <div className="w-full md:w-3/12 px-4">{employee.department}</div>
-              <div className="w-full md:w-3/12 px-4">{employee.joiningDate}</div>
-              <div className="w-full md:w-3/12 px-4">{employee.mobile}</div>
+            <div key={employee._id} className="flex justify-between items-center border-gray-200 py-2">
+
+              <div>
+              <div className="w-1/12 px-8">{index + 1}</div>
+              </div> 
+
+              <div className='flex flex-col lg:flex-row items-center  w-full'>
+              <div className="w-1/12 px-4 hidden lg:flex">{employee.id}</div>
+              <div className="w-full lg:w-3/12  px-4 capitalize">{`${employee.firstName} ${employee.lastName}`}</div>
+              <div className="w-full lg:w-3/12 px-4">{employee.department}</div>           
+             <div className="w-full lg:w-3/12 px-4">{employee.joiningDate}</div>
+              <div className="w-full lg:w-3/12 px-4 lg:px-8">{employee.mobile}</div>
+              </div>  
+             
               <div className="w-2/12 flex justify-center">
                 <button className="text-red-500 text-xl" onClick={() => handleDelete(employee._id)}>
                   <MdDeleteForever />
-                </button>
+                </button>                
               </div>
+
             </div>
           ))}
         </div>
