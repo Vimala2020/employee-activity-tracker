@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../Auth/Firebase';
 
 const Report = () => {
   const [progresses, setProgresses] = useState([]);
-  const [filteredProgresses, setFilteredProgresses] = useState([]);
   const [attendances, setAttendances] = useState([]);
-  const [filteredAttendances, setFilteredAttendances] = useState([]);
   const [user, setUser] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        fetchProgresses(currentUser.uid);
-        fetchAttendance(currentUser.uid);
-      } else {
-        setUser(null);
+      setUser(currentUser);
+      if (!currentUser) {
         setProgresses([]);
-        setFilteredProgresses([]);
         setAttendances([]);
-        setFilteredAttendances([]);
       }
     });
 
@@ -30,8 +21,11 @@ const Report = () => {
   }, []);
 
   useEffect(() => {
-    filterDataByDate();
-  }, [selectedDate, progresses, attendances]);
+    if (user && selectedDate) {
+      fetchProgresses(user.uid);
+      fetchAttendance(user.uid);
+    }
+  }, [user, selectedDate]);
 
   const fetchProgresses = async (userID) => {
     try {
@@ -51,28 +45,26 @@ const Report = () => {
     }
   };
 
-  const filterDataByDate = () => {
+  const filteredProgresses = useMemo(() => {
     if (selectedDate) {
-      const filteredProgresses = progresses.filter((progress) =>
-        progress.date.startsWith(selectedDate)
-      );
-      const filteredAttendances = attendances.filter((attendance) =>
-        attendance.date.startsWith(selectedDate)
-      );
-      setFilteredProgresses(filteredProgresses);
-      setFilteredAttendances(filteredAttendances);
-    } else {
-      setFilteredProgresses(progresses);
-      setFilteredAttendances(attendances);
+      return progresses.filter(progress => progress.date.startsWith(selectedDate));
     }
-  };
+    return progresses;
+  }, [selectedDate, progresses]);
+
+  const filteredAttendances = useMemo(() => {
+    if (selectedDate) {
+      return attendances.filter(attendance => attendance.date.startsWith(selectedDate));
+    }
+    return attendances;
+  }, [selectedDate, attendances]);
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 overflow-auto" >
       <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
         <h1 className="text-2xl font-bold mb-4">Work Progress Report</h1>
         <div className="mb-4">
@@ -86,27 +78,37 @@ const Report = () => {
             onChange={handleDateChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <div>
+          <h2 className="text-xl font-bold mb-2 mt-6">Attendance</h2>
+          {filteredAttendances.length > 0 ? (
+            <ul>
+              {filteredAttendances.map((attendance, index) => (
+                <li key={index} className="mt-2 text-gray-700">
+                 {attendance.status}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-700">No attendance records found for the selected date.</p>
+          )}
+        </div>
+
         </div>
         <div className="mb-4">
           <h2 className="text-xl font-bold mb-2">Work Progress</h2>
-          <ul>
-            {filteredProgresses.map((progress, index) => (
-              <li key={index} className="mt-2 text-gray-700">
-                {progress.date} - {progress.workDescription}
-              </li>
-            ))}
-          </ul>
+          {filteredProgresses.length > 0 ? (
+            <ul>
+              {filteredProgresses.map((progress, index) => (
+                <li key={index} className="mt-2 text-gray-700">
+                   {progress.work}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-700">No work progress found for the selected date.</p>
+          )}
         </div>
-        <div>
-          <h2 className="text-xl font-bold mb-2">Attendance</h2>
-          <ul>
-            {filteredAttendances.map((attendance, index) => (
-              <li key={index} className="mt-2 text-gray-700">
-                {attendance.date} - {attendance.status}
-              </li>
-            ))}
-          </ul>
-        </div>
+        
       </div>
     </div>
   );

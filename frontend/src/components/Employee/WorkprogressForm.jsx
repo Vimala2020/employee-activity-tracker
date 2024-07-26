@@ -9,6 +9,7 @@ const WorkprogressForm = () => {
   const [workDescription, setWorkDescription] = useState('');
   const [progresses, setProgresses] = useState([]);
   const [user, setUser] = useState(null);
+  const [submitTime, setSubmitTime] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -39,6 +40,7 @@ const WorkprogressForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitTime(new Date());
     try {
       const user = auth.currentUser;
       if (!user) {
@@ -48,13 +50,14 @@ const WorkprogressForm = () => {
       const workData = {
         userId: user.uid,
         date,
-        workDescription,
+        work: workDescription,
       };
       const response = await axios.post('http://localhost:5000/api/workprogress/submit', workData);
-      toast.success(response.data);
+      toast.success(response.data.message);
       fetchProgresses(user.uid);
       setWorkDescription('');
     } catch (error) {
+      console.error('Error submitting work progress:', error);
       toast.error('Please try again..!');
     }
   };
@@ -83,16 +86,10 @@ const WorkprogressForm = () => {
             Submit Work
           </button>
         </form>
-        <ul>
-          {progresses.map((progress, index) => (
-            <li key={index} className="mt-2 text-gray-700">
-              {progress.date} - {progress.workDescription}
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
 };
 
 export default WorkprogressForm;
+
