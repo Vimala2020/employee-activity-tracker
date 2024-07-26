@@ -13,7 +13,6 @@ const Report = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log('Auth state changed. Current user:', currentUser);
       if (currentUser) {
         setUser(currentUser);
         fetchProgresses(currentUser.uid);
@@ -36,10 +35,8 @@ const Report = () => {
 
   const fetchProgresses = async (userID) => {
     try {
-      console.log('Fetching progress for userID:', userID);
       const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`);
       setProgresses(response.data);
-      console.log('Progress data:', response.data);
     } catch (error) {
       console.error('Error fetching progress data:', error);
     }
@@ -47,10 +44,8 @@ const Report = () => {
 
   const fetchAttendance = async (userID) => {
     try {
-      console.log('Fetching attendance for userID:', userID);
       const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`);
       setAttendances(response.data);
-      console.log('Attendance data:', response.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
     }
@@ -58,73 +53,60 @@ const Report = () => {
 
   const filterDataByDate = () => {
     if (selectedDate) {
-      const filteredProgresses = progresses.filter(progress =>
-        new Date(progress.date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
+      const filteredProgresses = progresses.filter((progress) =>
+        progress.date.startsWith(selectedDate)
       );
-      const filteredAttendances = attendances.filter(attendance =>
-        new Date(attendance.date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
+      const filteredAttendances = attendances.filter((attendance) =>
+        attendance.date.startsWith(selectedDate)
       );
       setFilteredProgresses(filteredProgresses);
       setFilteredAttendances(filteredAttendances);
     } else {
-      setFilteredProgresses([]);
-      setFilteredAttendances([]);
+      setFilteredProgresses(progresses);
+      setFilteredAttendances(attendances);
     }
   };
 
   const handleDateChange = (e) => {
-    const date = e.target.value;
-    setSelectedDate(date);
+    setSelectedDate(e.target.value);
   };
 
   return (
     <div className="container mx-auto p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Report</h1>
-
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Please select a Date</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
+        <h1 className="text-2xl font-bold mb-4">Work Progress Report</h1>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+            Filter by Date
+          </label>
           <input
             type="date"
-            onChange={handleDateChange}
+            id="date"
             value={selectedDate}
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            onChange={handleDateChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-
-        {selectedDate && (
-          <>
-            <div className="mt-8">
-              <h2 className="text-xl font-bold mb-4">Work Progress List</h2>
-              <ul className="list-disc pl-5">
-                {filteredProgresses.length > 0 ? (
-                  filteredProgresses.map((progress, index) => (
-                    <li key={index} className="mb-2">
-                      <span className="font-semibold">{new Date(progress.date).toLocaleDateString()}:</span> {progress.work}
-                    </li>
-                  ))
-                ) : (
-                  <li>No work progress data available for the selected date.</li>
-                )}
-              </ul>
-            </div>
-
-            <div className="mt-8">
-              <h2 className="text-xl font-bold mb-4">Attendance List</h2>
-              <ul className="list-disc pl-5">
-                {filteredAttendances.length > 0 ? (
-                  filteredAttendances.map((attendance, index) => (
-                    <li key={index} className="mb-2">
-                      <span className="font-semibold">{new Date(attendance.date).toLocaleDateString()}:</span> {attendance.status}
-                    </li>
-                  ))
-                ) : (
-                  <li>No attendance data available for the selected date.</li>
-                )}
-              </ul>
-            </div>
-          </>
-        )}
+        <div className="mb-4">
+          <h2 className="text-xl font-bold mb-2">Work Progress</h2>
+          <ul>
+            {filteredProgresses.map((progress, index) => (
+              <li key={index} className="mt-2 text-gray-700">
+                {progress.date} - {progress.workDescription}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold mb-2">Attendance</h2>
+          <ul>
+            {filteredAttendances.map((attendance, index) => (
+              <li key={index} className="mt-2 text-gray-700">
+                {attendance.date} - {attendance.status}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

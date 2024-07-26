@@ -2,8 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-*
-{
-  margin: 0;
-  padding: 0;
+
+/* Add this CSS to your main stylesheet */
+
+/* Animations */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.main-content {
+  margin-top: 64px; /* Adjust this value based on the height of your header */
+}
+
+.sidebar {
+  height: calc(100% - 64px); /* Adjust this value based on the height of your header */
+  top: 64px; /* Adjust this value based on the height of your header */
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.5s ease-in-out;
+}
+
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+}
+
+.container {
+  margin-top: 2rem;
+  max-width: 800px;
+}
+
+/* Form Styles */
+form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  font-weight: 600;
+  color: #555;
+}
+
+form select,
+form textarea,
+form button {
+  transition: all 0.3s ease;
+}
+
+form select:focus,
+form textarea:focus,
+form button:focus {
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+}
+
+form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
