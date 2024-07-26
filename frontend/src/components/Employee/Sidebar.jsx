@@ -15,9 +15,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 h-full w-64 bg-[#2F3645] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-1/4 lg:w-1/5 z-10`}>
-      <div className="relative">
-        <img src={user} alt="admin" className="mx-auto mt-5 w-20 border-2 p-3 bg-white bg-opacity-80 rounded-full" />
+    <div className={`fixed top-0 left-0 h-full w-64 bg-[#35495e] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-1/4 lg:w-1/5 z-10`}>
+      <div className="relative p-4">
+        <img src={user} alt="admin" className="mx-auto w-20 border-2 p-3 bg-white bg-opacity-80 rounded-full" />
         <MdOutlineClose size={24} className="absolute top-2 right-2 text-white cursor-pointer md:hidden" onClick={toggleSidebar} />
       </div>
       <div className="flex flex-col justify-evenly mx-10 h-[60%]">
@@ -34,17 +34,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <div className="flex gap-3 items-center text-white cursor-pointer" onClick={() => handleToggle('attendance')}>
               <PiNotepadThin size={24} />
               <Link to="/employee/attendance/attendance-form" onClick={() => toggleSidebar()}>
-              <h3 className="text-base font-semibold">Attendance</h3>
+                <h3 className="text-base font-semibold">Attendance</h3>
               </Link>
             </div>
-            </div>
-        
+          </div>
 
           <div className="flex flex-col gap-3 mt-5">
             <div className="flex gap-3 items-center text-white cursor-pointer" onClick={() => handleToggle('workProgress')}>
               <IoIosPrint size={24} />
               <Link to="/employee/work-progress/work-progress-form" onClick={() => toggleSidebar()}>
-              <h3 className="text-base font-semibold">Work Progress</h3>
+                <h3 className="text-base font-semibold">Work Progress</h3>
               </Link>
             </div>
           </div>
@@ -63,3 +62,4 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 };
 
 export default Sidebar;
+

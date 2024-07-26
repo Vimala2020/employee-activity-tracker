@@ -3,7 +3,7 @@ import axios from 'axios';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../Auth/Firebase';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 
 const AttendanceForm = () => {
   const [status, setStatus] = useState('');
@@ -14,7 +14,6 @@ const AttendanceForm = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log('Auth state changed. Current user:', currentUser); // Debug log
       if (currentUser) {
         setUser(currentUser);
         fetchAttendance(currentUser.uid);
@@ -32,7 +31,7 @@ const AttendanceForm = () => {
       const now = new Date();
       const timePassed = now - new Date(submitTime);
       const hoursPassed = timePassed / (1000 * 60 * 60);
-      
+
       if (hoursPassed >= 18) {
         setIsSubmitted(false);
       }
@@ -41,10 +40,8 @@ const AttendanceForm = () => {
 
   const fetchAttendance = async (userID) => {
     try {
-      console.log('Fetching attendance for userID:', userID); // Debug log
       const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`);
       setAttendances(response.data);
-      console.log('Attendance data:', response.data); // Debug log
     } catch (error) {
       console.error('Error fetching attendance data:', error);
     }
@@ -52,7 +49,6 @@ const AttendanceForm = () => {
 
   const handleChange = (e) => {
     setStatus(e.target.value);
-    console.log('Status changed:', e.target.value); // Debug log
   };
 
   const handleSubmit = async (e) => {
@@ -70,21 +66,18 @@ const AttendanceForm = () => {
         date,
         status,
       };
-      console.log('Submitting attendance data:', attendanceData); // Debug log
       const response = await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
-      toast.success(response.data); 
-      fetchAttendance(user.uid); // Update attendance list after marking
-      setStatus(''); // Clear status after submission
+      toast.success(response.data);
+      fetchAttendance(user.uid);
+      setStatus('');
     } catch (error) {
       toast.error('Please try again..!');
-    } finally {
-      console.log('Submission completed'); // Debug log
     }
   };
 
   return (
     <div className="container mx-auto p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
         <h1 className="text-2xl font-bold mb-4">Mark Attendance</h1>
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="mb-4">
@@ -97,7 +90,7 @@ const AttendanceForm = () => {
               value={status}
               onChange={handleChange}
               required
-              disabled={isSubmitted} // Disable status selection after submission
+              disabled={isSubmitted}
             >
               <option value="">Select Status</option>
               <option value="present">Present</option>
