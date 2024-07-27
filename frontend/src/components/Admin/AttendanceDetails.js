@@ -4,8 +4,7 @@ import axios from 'axios';
 const AttendanceDetails = () => {
   const [employees, setEmployees] = useState([]); // List of employees
   const [selectedEmployee, setSelectedEmployee] = useState(null); // Selected employee for details
-  const [attendanceData, setAttendanceData] = useState([]); // Selected employee's attendance data
-  const [progressData, setProgressData] = useState([]); // Selected employee's work progress data
+  const [combinedData, setCombinedData] = useState([]); // Combined attendance and work progress data
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -32,21 +31,47 @@ const AttendanceDetails = () => {
       console.log('Fetching attendance from:', attendanceUrl);
       const attendanceResponse = await axios.get(attendanceUrl);
       console.log('Attendance data:', attendanceResponse.data); // Debugging: Log the attendance data
-      setAttendanceData(attendanceResponse.data);
   
       // Fetch work progress details for the selected employee
       const progressUrl = `http://localhost:5000/api/workprogress/${employee.firebaseId}`;
       console.log('Fetching progress from:', progressUrl);
       const progressResponse = await axios.get(progressUrl);
       console.log('Progress data:', progressResponse.data); // Debugging: Log the progress data
-      setProgressData(progressResponse.data);
-  
-      // Set the selected employee
+
+      // Combine attendance and work progress data based on date
+      const combined = combineData(attendanceResponse.data, progressResponse.data);
+
+      // Set the selected employee and combined data
       setSelectedEmployee(employee);
+      setCombinedData(combined);
     } catch (err) {
       setError('Failed to fetch details for the selected employee');
       console.error(err);
     }
+  };
+
+  const combineData = (attendance, progress) => {
+    const combined = [];
+    const attendanceMap = new Map();
+    const progressMap = new Map();
+
+    // Map attendance data by date
+    attendance.forEach(att => attendanceMap.set(att.date, att.status));
+
+    // Map work progress data by date
+    progress.forEach(prog => progressMap.set(prog.date, prog.work));
+
+    // Combine data based on dates
+    const allDates = new Set([...attendanceMap.keys(), ...progressMap.keys()]);
+    allDates.forEach(date => {
+      combined.push({
+        date: new Date(date).toLocaleDateString(),
+        status: attendanceMap.get(date) || 'No Data',
+        work: progressMap.get(date) || 'No Data'
+      });
+    });
+
+    return combined;
   };
 
   return (
@@ -55,7 +80,7 @@ const AttendanceDetails = () => {
 
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <table className="table-auto w-full">
+      <table className="table-auto w-full mb-4">
         <thead>
           <tr className="bg-gray-200">
             <th className="px-4 py-2">Name</th>
@@ -88,31 +113,30 @@ const AttendanceDetails = () => {
             Attendance and Work Progress for {selectedEmployee.firstName} {selectedEmployee.lastName}
           </h2>
 
-          <h3 className="text-lg font-semibold">Attendance Records:</h3>
-          <ul className="list-disc pl-6 mb-4">
-            {attendanceData.length > 0 ? (
-              attendanceData.map((att) => (
-                <li key={att._id}>
-                  Date: {new Date(att.date).toLocaleDateString()} - Status: {att.status}
-                </li>
-              ))
-            ) : (
-              <li>No attendance records found.</li>
-            )}
-          </ul>
-
-          <h3 className="text-lg font-semibold">Work Progress:</h3>
-          <ul className="list-disc pl-6">
-            {progressData.length > 0 ? (
-              progressData.map((prog) => (
-                <li key={prog._id}>
-                  Date: {new Date(prog.date).toLocaleDateString()} - Work: {prog.work}
-                </li>
-              ))
-            ) : (
-              <li>No work progress found.</li>
-            )}
-          </ul>
+          <table className="table-auto w-full">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="px-4 py-2">Date</th>
+                <th className="px-4 py-2">Attendance Status</th>
+                <th className="px-4 py-2">Work Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              {combinedData.length > 0 ? (
+                combinedData.map((data, index) => (
+                  <tr key={index} className="bg-white border-b">
+                    <td className="px-4 py-2">{data.date}</td>
+                    <td className="px-4 py-2">{data.status}</td>
+                    <td className="px-4 py-2">{data.work}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-4 py-2 text-center">No records found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
