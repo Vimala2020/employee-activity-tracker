@@ -38,7 +38,7 @@ const ManageEmployee = ({employees, deleteEmployee }) => {
               <div className="w-1/12 px-4 hidden lg:flex">{employee.id}</div>
               <div className="w-full lg:w-3/12  px-4 capitalize">{`${employee.firstName} ${employee.lastName}`}</div>
               <div className="w-full lg:w-3/12 px-4">{employee.department}</div>           
-             <div className="w-full lg:w-3/12 px-4">{employee.joiningDate}</div>
+             <div className="w-full lg:w-3/12 px-4">{new Date(employee.joiningDate).toLocaleDateString()}</div>
               <div className="w-full lg:w-3/12 px-4 lg:px-8">{employee.mobile}</div>
               </div>  
              
