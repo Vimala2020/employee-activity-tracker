@@ -35,10 +35,11 @@ exports.getProgresses = async function (req, res) {
 
 exports.getAllProgresses = async (req, res) => {
   try {
-    const progresses = await Progress.find();
+    // Use the correct model name
+    const progresses = await Progresses.find(); 
     res.status(200).json(progresses);
   } catch (error) {
-    console.error('Error fetching all progress data:', error);
-    res.status(500).send('Failed to fetch progress data.');
+    console.error('Error fetching all progress data:', error.message); // Log error messages
+    res.status(500).json({ error: 'Failed to fetch progress data.' }); // Provide error details to client
   }
 };
