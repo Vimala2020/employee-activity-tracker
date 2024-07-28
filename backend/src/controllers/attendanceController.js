@@ -22,9 +22,24 @@ const markAttendance = async (req, res) => {
 
 const getAttendance = async (req, res) => {
   const { userId } = req.params;
+  const { startDate, endDate } = req.query;
+
   try {
-    const attendance = await Attendance.find({ userId });
-    if (!attendance) {
+    let query = { userId };
+
+    // Add date filter if both startDate and endDate are provided
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+      console.log('Query with date filter:', query); // Debugging statement
+    } else {
+      console.log('Query without date filter:', query); // Debugging statement
+    }
+
+    const attendance = await Attendance.find(query); // Use the query with the date filter if applicable
+    if (!attendance || attendance.length === 0) {
       return res.status(404).json({ message: 'No attendance records found.' });
     }
     res.status(200).json(attendance);
@@ -34,11 +49,25 @@ const getAttendance = async (req, res) => {
   }
 };
 
-
 const getAllAttendance = async (req, res) => {
+  const { startDate, endDate } = req.query;
+
   try {
+    let query = {};
+
+    
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+      console.log('Query with date filter:', query); 
+    } else {
+      console.log('Query without date filter:', query);
+    }
+
     console.log('Fetching all attendance records');
-    const attendance = await Attendance.find();
+    const attendance = await Attendance.find(query); 
     if (!attendance || attendance.length === 0) {
       console.log('No attendance records found');
       return res.status(404).json({ message: 'No attendance records found.' });
@@ -50,6 +79,7 @@ const getAllAttendance = async (req, res) => {
     res.status(500).send('Failed to fetch attendance data.');
   }
 };
+
 
 
 

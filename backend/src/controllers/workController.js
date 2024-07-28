@@ -1,44 +1,70 @@
-const Progresses = require('../models/Progresses');
+const Progress = require('../models/Progresses');
 const sendDailyReport = require('../config/email');
 
-exports.submitProgresses = async function (req, res) {
-  const { userId, work } = req.body;
+exports.submitProgresses = async (req, res) => {
   try {
-    if (!userId || !work) {
-      throw new Error("Missing required fields: userId, or work");
-    }
-    const progresses = new Progresses({ userId, work, date: new Date() });
-    console.log('Saving work record:', progresses);
-    await progresses.save();
-    res.status(201).json({ message: 'Work progress submitted successfully' });
-
-    const report = `User ${progresses.userId} submitted Work Progress Report on ${progresses.date}`;
+    const { userId, work } = req.body;
+    const newProgress = new Progress({ userId, work });
+    await newProgress.save();
+    
+    // Generate and send a daily report
+    const report = `User ${userId} submitted progress: ${work}`;
     sendDailyReport(process.env.EMAIL_MANAGER, report);
-    console.log('Email sent successfully');
-  } catch (err) {
-    console.error('Error submitting work progress or sending email:', err.message);
-    res.status(500).json({ error: err.message });
+    
+    res.status(201).json({ message: 'Work progress submitted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
   }
 };
-
-exports.getProgresses = async function (req, res) {
+exports.getProgresses = async (req, res) => {
   const { userId } = req.params;
+  const { startDate, endDate } = req.query;
+
+  console.log('Received query params:', startDate, endDate); // Debugging statement
+
   try {
-    console.log('Fetching work progress for user:', userId);
-    const progresses = await Progresses.find({ userId });
-    res.status(200).json(progresses);
-  } catch (err) {
-    console.error('Error fetching work progress:', err.message);
-    res.status(500).json({ error: err.message });
+    let query = { userId };
+
+    // Add date filter if both startDate and endDate are provided
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    console.log('MongoDB query:', query); // Debugging statement
+
+    const progresses = await Progress.find(query);
+    console.log('Filtered progresses:', progresses); // Debugging statement
+    res.json(progresses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
   }
 };
 
 exports.getAllProgresses = async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  console.log('Received query params:', startDate, endDate); // Debugging statement
+
   try {
-    const progresses = await Progress.find();
-    res.status(200).json(progresses);
+    let query = {};
+
+    // Add date filter if both startDate and endDate are provided
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    console.log('MongoDB query:', query); // Debugging statement
+
+    const progresses = await Progress.find(query);
+    console.log('Filtered progresses:', progresses); // Debugging statement
+    res.json(progresses);
   } catch (error) {
-    console.error('Error fetching all progress data:', error);
-    res.status(500).send('Failed to fetch progress data.');
+    res.status(500).json({ error: 'Server error' });
   }
 };

@@ -5,11 +5,10 @@ import { auth } from '../Auth/Firebase';
 
 const Report = () => {
   const [progresses, setProgresses] = useState([]);
-  const [filteredProgresses, setFilteredProgresses] = useState([]);
   const [attendances, setAttendances] = useState([]);
-  const [filteredAttendances, setFilteredAttendances] = useState([]);
   const [user, setUser] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -20,22 +19,19 @@ const Report = () => {
       } else {
         setUser(null);
         setProgresses([]);
-        setFilteredProgresses([]);
         setAttendances([]);
-        setFilteredAttendances([]);
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    filterDataByDate();
-  }, [selectedDate, progresses, attendances]);
-
   const fetchProgresses = async (userID) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`);
+      const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`, {
+        params: { startDate, endDate }
+      });
+      console.log('Response data:', response.data); // Debugging statement
       setProgresses(response.data);
     } catch (error) {
       console.error('Error fetching progress data:', error);
@@ -44,31 +40,29 @@ const Report = () => {
 
   const fetchAttendance = async (userID) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`);
+      const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`, {
+        params: { startDate, endDate }
+      });
+      console.log('Response data:', response.data); // Debugging statement
       setAttendances(response.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
     }
   };
 
-  const filterDataByDate = () => {
-    if (selectedDate) {
-      const filteredProgresses = progresses.filter((progress) =>
-        progress.date.startsWith(selectedDate)
-      );
-      const filteredAttendances = attendances.filter((attendance) =>
-        attendance.date.startsWith(selectedDate)
-      );
-      setFilteredProgresses(filteredProgresses);
-      setFilteredAttendances(filteredAttendances);
-    } else {
-      setFilteredProgresses(progresses);
-      setFilteredAttendances(attendances);
+  const handleFetchReport = () => {
+    if (user) {
+      fetchProgresses(user.uid);
+      fetchAttendance(user.uid);
     }
   };
 
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
   };
 
   return (
@@ -76,31 +70,49 @@ const Report = () => {
       <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
         <h1 className="text-2xl font-bold mb-4">Work Progress Report</h1>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-            Filter by Date
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="start-date">
+            Start Date
           </label>
           <input
             type="date"
-            id="date"
-            value={selectedDate}
-            onChange={handleDateChange}
+            id="start-date"
+            value={startDate}
+            onChange={handleStartDateChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="end-date">
+            End Date
+          </label>
+          <input
+            type="date"
+            id="end-date"
+            value={endDate}
+            onChange={handleEndDateChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <button
+          onClick={handleFetchReport}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Get Report
+        </button>
+        <div className="mt-4">
           <h2 className="text-xl font-bold mb-2">Work Progress</h2>
           <ul>
-            {filteredProgresses.map((progress, index) => (
+            {progresses.map((progress, index) => (
               <li key={index} className="mt-2 text-gray-700">
-                {progress.date} - {progress.workDescription}
+                {progress.date} - {progress.work}
               </li>
             ))}
           </ul>
         </div>
-        <div>
+        <div className="mt-4">
           <h2 className="text-xl font-bold mb-2">Attendance</h2>
           <ul>
-            {filteredAttendances.map((attendance, index) => (
+            {attendances.map((attendance, index) => (
               <li key={index} className="mt-2 text-gray-700">
                 {attendance.date} - {attendance.status}
               </li>
@@ -113,3 +125,4 @@ const Report = () => {
 };
 
 export default Report;
+

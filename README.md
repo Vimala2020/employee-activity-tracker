@@ -16,5 +16,4 @@ This project involves developing an Employee Attendance Tracker where each emplo
 - **Database**: MongoDB
 - **Authentication**: Firebase
 - **Email Service**: Nodemailer
-- **Testing**: Jest, Mocha, Chai
 - **Deployment**: Vercel/Netlify (frontend), Heroku/AWS (backend)

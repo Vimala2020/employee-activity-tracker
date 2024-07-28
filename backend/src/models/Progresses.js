@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const ProgressesSchema = new mongoose.Schema({
-  userId: { type: String, ref: 'User', required: true },
+const progressSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  work: { type: String, required: true },
   date: { type: Date, default: Date.now },
-  work: { type: String, required: true }
 });
 
-module.exports = mongoose.model('Progresses', ProgressesSchema);
+module.exports = mongoose.model('Progresses', progressSchema);
