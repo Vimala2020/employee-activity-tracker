@@ -5,16 +5,12 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const attendanceRoutes = require('./src/routes/attendance');
-const workProgressRoutes = require('./src/routes/WorkProgress');
+const workProgressRoutes = require('./src/routes/progresses');
 const departmentRoutes = require('./routes/department');
 const employeeRoutes = require('./routes/employeeRoutes');
 //const testEmailRoute = require('./src/routes/testEndPoint'); // Adjust the path accordingly
 
-
-
-
 dotenv.config();
-
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json({ limit: "20mb", extended: true }));

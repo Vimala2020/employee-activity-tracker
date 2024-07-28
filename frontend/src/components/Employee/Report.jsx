@@ -31,7 +31,6 @@ const Report = () => {
       const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`, {
         params: { startDate, endDate }
       });
-      console.log('Response data:', response.data); // Debugging statement
       setProgresses(response.data);
     } catch (error) {
       console.error('Error fetching progress data:', error);
@@ -43,7 +42,6 @@ const Report = () => {
       const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`, {
         params: { startDate, endDate }
       });
-      console.log('Response data:', response.data); // Debugging statement
       setAttendances(response.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
@@ -68,9 +66,9 @@ const Report = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
-        <h1 className="text-2xl font-bold mb-4">Work Progress Report</h1>
+        <h1 className="text-2xl font-bold text-amber-900 mb-4"> Report</h1>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="start-date">
+          <label className="block text-zinc-700 text-sm font-bold mb-2" htmlFor="start-date">
             Start Date
           </label>
           <input
@@ -82,7 +80,7 @@ const Report = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="end-date">
+          <label className="block text-zinc-700 text-sm font-bold mb-2" htmlFor="end-date">
             End Date
           </label>
           <input
@@ -100,29 +98,29 @@ const Report = () => {
           Get Report
         </button>
         <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Work Progress</h2>
+          <h2 className="text-xl font-bold text-amber-900 mb-2">Attendance</h2>
           <ul>
-            {progresses.map((progress, index) => (
-              <li key={index} className="mt-2 text-gray-700">
-                {progress.date} - {progress.work}
+            {attendances.map((attendance, index) => (
+              <li key={index} className="mt-2 text-zinc-700">
+                 {attendance.status}
               </li>
             ))}
           </ul>
         </div>
         <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Attendance</h2>
+          <h2 className="text-xl font-bold text-amber-900 mb-2">Work Progress</h2>
           <ul>
-            {attendances.map((attendance, index) => (
-              <li key={index} className="mt-2 text-gray-700">
-                {attendance.date} - {attendance.status}
+            {progresses.map((progress, index) => (
+              <li key={index} className="mt-2 text-zinc-700">
+                {progress.work} 
               </li>
             ))}
           </ul>
         </div>
+       
       </div>
     </div>
   );
 };
 
 export default Report;
-
