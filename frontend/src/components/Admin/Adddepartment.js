@@ -16,7 +16,7 @@ const AddDepartment = ({ addDepartment }) => {
 
   return (
     <div>
-      <div className='border-2 w-full md:w-1/2 mt-5 shadow-lg'>
+      <div className='border-2 w-full lg:w-1/2 mt-5 shadow-lg'>
         <h2 className='text-center text-xl font-bold p-2'>Add Department</h2>
         <hr />
         <form className='flex flex-col gap-5 mx-5 pb-5' onSubmit={handleSubmit}>
