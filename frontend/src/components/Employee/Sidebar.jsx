@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <h2 className="text-gray-400 text-base font-semibold">Employee</h2>
           <div className="flex gap-3 items-center text-white mt-5">
             <TfiDashboard size={24} />
-            <Link to="/employee/dashboard" onClick={() => toggleSidebar()}>
+            <Link to="/employee/" onClick={() => toggleSidebar()}>
               <h3 className="text-base font-semibold cursor-pointer">Dashboard</h3>
             </Link>
           </div>

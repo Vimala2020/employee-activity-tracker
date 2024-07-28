@@ -14,8 +14,11 @@ const Report = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        fetchProgresses(currentUser.uid);
-        fetchAttendance(currentUser.uid);
+        // Fetch data initially if dates are already set (if needed)
+        if (startDate && endDate) {
+          fetchProgresses(currentUser.uid);
+          fetchAttendance(currentUser.uid);
+        }
       } else {
         setUser(null);
         setProgresses([]);
@@ -24,53 +27,66 @@ const Report = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [startDate, endDate]); 
 
   const fetchProgresses = async (userID) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`, {
-        params: { startDate, endDate }
-      });
-      console.log('Response data:', response.data); // Debugging statement
+      const response = await axios.get(
+        `http://localhost:5000/api/workprogress/${userID}`,
+        {
+          params: { startDate, endDate },
+        }
+      );
+      console.log('Progress Response data:', response.data); 
       setProgresses(response.data);
     } catch (error) {
       console.error('Error fetching progress data:', error);
     }
   };
 
+  // Fetch attendance records for the current user within the date range
   const fetchAttendance = async (userID) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`, {
-        params: { startDate, endDate }
-      });
-      console.log('Response data:', response.data); // Debugging statement
+      const response = await axios.get(
+        `http://localhost:5000/api/attendance/${userID}`,
+        {
+          params: { startDate, endDate },
+        }
+      );
+      console.log('Attendance Response data:', response.data); 
       setAttendances(response.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
     }
   };
 
+  // Handle the report fetching based on date selection
   const handleFetchReport = () => {
-    if (user) {
+    if (user && startDate && endDate) {
       fetchProgresses(user.uid);
       fetchAttendance(user.uid);
     }
   };
 
+  // Update the start date in the state
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
 
+  // Update the end date in the state
   const handleEndDateChange = (e) => {
     setEndDate(e.target.value);
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-16">
       <div className="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
         <h1 className="text-2xl font-bold mb-4">Work Progress Report</h1>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="start-date">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="start-date"
+          >
             Start Date
           </label>
           <input
@@ -82,7 +98,10 @@ const Report = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="end-date">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="end-date"
+          >
             End Date
           </label>
           <input
@@ -125,4 +144,3 @@ const Report = () => {
 };
 
 export default Report;
-
