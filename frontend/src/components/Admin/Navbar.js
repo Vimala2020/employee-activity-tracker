@@ -1,6 +1,6 @@
 import React from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import admin from '../../assets/admin2.png';
+import admin from '../../assets/admin3.png';
 import { IoIosLogOut } from "react-icons/io";
 import {auth} from '../Auth/Firebase'
 import {useNavigate} from 'react-router-dom'
