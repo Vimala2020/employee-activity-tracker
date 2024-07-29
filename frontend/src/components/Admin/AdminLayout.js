@@ -21,7 +21,7 @@ const AdminLayout = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('https://attendance-tracker-backend-vwag.onrender.com/api/department');
+        const response = await axios.get('https://attendance-tracker-backend-vwag.onrender.comapi/department');
         setDepartmentList(response.data);
       } catch (error) {
         console.error('Error fetching department data:', error);
@@ -30,7 +30,7 @@ const AdminLayout = () => {
 
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('https://attendance-tracker-backend-vwag.onrender.com/api/employee');
+        const response = await axios.get('https://attendance-tracker-backend-vwag.onrender.comapi/employee');
         setEmployees(response.data);
       } catch (error) {
         console.error('Error fetching employee data:', error);
@@ -43,7 +43,7 @@ const AdminLayout = () => {
 
   const addDepartment = async (newDepartment) => {
     try {
-      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.com/api/department/add', { name: newDepartment });
+      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.comapi/department/add', { name: newDepartment });
       setDepartmentList([...departmentList, response.data.department]);
       toast.success(response.data.message);
     } catch (error) {
@@ -57,7 +57,7 @@ const AdminLayout = () => {
 
   const editDepartment = async (id, updatedName) => {
     try {
-      const response = await axios.put(`https://attendance-tracker-backend-vwag.onrender.com/api/department/edit/${id}`, { name: updatedName });
+      const response = await axios.put(`https://attendance-tracker-backend-vwag.onrender.comapi/department/edit/${id}`, { name: updatedName });
       setDepartmentList(departmentList.map(dept => (dept._id === id ? response.data.department : dept)));
       toast.success(response.data.message);
     } catch (error) {
@@ -67,7 +67,7 @@ const AdminLayout = () => {
 
   const deleteDepartment = async (id) => {
     try {
-      const response = await axios.delete(`https://attendance-tracker-backend-vwag.onrender.com/api/department/delete/${id}`);
+      const response = await axios.delete(`https://attendance-tracker-backend-vwag.onrender.comapi/department/delete/${id}`);
       setDepartmentList(departmentList.filter(dept => dept._id !== id));
       toast.success(response.data.message);
     } catch (error) {
@@ -78,7 +78,7 @@ const AdminLayout = () => {
   const addEmployee = async (newEmployee) => {
     try {
       // Add employee to MongoDB
-      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.com/api/employee/add', newEmployee);
+      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.comapi/employee/add', newEmployee);
       setEmployees([...employees, response.data.employee]);
       toast.success(response.data.message);
     } catch (error) {
@@ -88,7 +88,7 @@ const AdminLayout = () => {
 
   const deleteEmployee = async (id) => {
     try {
-      const response = await axios.delete(`https://attendance-tracker-backend-vwag.onrender.com/api/employee/delete/${id}`);
+      const response = await axios.delete(`https://attendance-tracker-backend-vwag.onrender.comapi/employee/delete/${id}`);
       setEmployees(employees.filter((employee) => employee._id !== id));
       toast.success(response.data.message);
     } catch (error) {
