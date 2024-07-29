@@ -40,7 +40,7 @@ const AttendanceForm = () => {
 
   const fetchAttendance = async (userID) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/attendance/${userID}`);
+      const response = await axios.get(`https://attendance-tracker-backend-vwag.onrender.comapi/attendance/${userID}`);
       setAttendances(response.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
@@ -66,7 +66,7 @@ const AttendanceForm = () => {
         date,
         status,
       };
-      const response = await axios.post('http://localhost:5000/api/attendance/mark', attendanceData);
+      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.comapi/attendance/mark', attendanceData);
       toast.success(response.data);
       fetchAttendance(user.uid);
       setStatus('');
