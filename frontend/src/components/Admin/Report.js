@@ -14,7 +14,7 @@ const Report = () => {
     const fetchEmployees = async () => {
       try {
         // Fetch employee data
-        const response = await axios.get('https://attendance-tracker-backend-vwag.onrender.com/api/employee');
+        const response = await axios.get('http://localhost:5000/api/employee');
         setEmployees(response.data);
       } catch (err) {
         setError('Failed to fetch employees');
@@ -30,13 +30,13 @@ const Report = () => {
 
     try {
       // Fetch attendance details for the selected employee
-      const attendanceUrl = `https://attendance-tracker-backend-vwag.onrender.com/api/attendance/${employee.firebaseId}`;
+      const attendanceUrl = `http://localhost:5000/api/attendance/${employee.firebaseId}`;
       console.log('Fetching attendance from:', attendanceUrl);
       const attendanceResponse = await axios.get(attendanceUrl);
       console.log('Attendance data:', attendanceResponse.data); // Debugging: Log the attendance data
 
       // Fetch work progress details for the selected employee
-      const progressUrl = `https://attendance-tracker-backend-vwag.onrender.com/api/workprogress/${employee.firebaseId}`;
+      const progressUrl = `http://localhost:5000/api/workprogress/${employee.firebaseId}`;
       console.log('Fetching progress from:', progressUrl);
       const progressResponse = await axios.get(progressUrl);
       console.log('Progress data:', progressResponse.data); // Debugging: Log the progress data

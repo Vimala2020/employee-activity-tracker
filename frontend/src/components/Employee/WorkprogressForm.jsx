@@ -27,7 +27,7 @@ const WorkprogressForm = () => {
 
   const fetchProgresses = async (userID) => {
     try {
-      const response = await axios.get(`https://attendance-tracker-backend-vwag.onrender.com/api/workprogress/${userID}`);
+      const response = await axios.get(`http://localhost:5000/api/workprogress/${userID}`);
       setProgresses(response.data);
     } catch (error) {
       console.error('Error fetching progress data:', error);
@@ -52,7 +52,7 @@ const WorkprogressForm = () => {
         date,
         work: workDescription,
       };
-      const response = await axios.post('https://attendance-tracker-backend-vwag.onrender.com/api/workprogress/submit', workData);
+      const response = await axios.post('http://localhost:5000/api/workprogress/submit', workData);
       toast.success(response.data.message);
       fetchProgresses(user.uid);
       setWorkDescription('');
