@@ -32,7 +32,7 @@ const Report = () => {
   const fetchProgresses = async (userID) => {
     try {
       const response = await axios.get(
-        `https://attendance-tracker-backend-vwag.onrender.comapi/workprogress/${userID}`,
+        `http://localhost:5000/api/workprogress/${userID}`,
         {
           params: { startDate, endDate },
         }
@@ -48,7 +48,7 @@ const Report = () => {
   const fetchAttendance = async (userID) => {
     try {
       const response = await axios.get(
-        `https://attendance-tracker-backend-vwag.onrender.comapi/attendance/${userID}`,
+        `http://localhost:5000/api/attendance/${userID}`,
         {
           params: { startDate, endDate },
         }
